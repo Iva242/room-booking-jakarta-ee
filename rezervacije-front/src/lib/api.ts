@@ -32,31 +32,15 @@ export const api = {
   // --- AUTH ---
 
   login: async (podaci: { korisnickoIme: string; lozinka: string }) => {
-    console.log("--- POKUŠAJ LOGIN-A POČINJE ---");
+    const res = await fetch(`${BASE_URL}/auth/login`, {
+      method: "POST",
+      headers: getHeaders(false),
+      body: JSON.stringify(podaci),
+    });
 
-    try {
-      const res = await fetch(`${BASE_URL}/auth/login`, {
-        method: "POST",
-        headers: getHeaders(false),
-        body: JSON.stringify(podaci),
-      });
+    if (!res.ok) throw new Error("Pogrešno korisničko ime ili lozinka");
 
-      console.log("--- ODGOVOR SA SERVERA ---", res.status);
-
-      if (!res.ok) throw new Error("Pogrešno korisničko ime ili lozinka");
-
-      // OVDE UHVATI PODATKE
-      const data = await res.json();
-
-      // OVDE IH ISPIŠI
-      console.log("ŠTA STIGLO SA SERVERA:", data);
-
-      // I ONDA IH VRATI
-      return data;
-    } catch (error) {
-      console.error("--- GREŠKA U API POZIVU ---", error);
-      throw error;
-    }
+    return res.json();
   },
 
   register: async (podaci: any) => {

@@ -93,8 +93,6 @@ export default function SalaDetalji({ params }: PageProps) {
         ]);
 
         // OVO DODAJ U FETCH FUNKCIJU
-        console.log("ŠTA TAČNO STIGNE KAO TIPOVIDOGADJAJA:", tipData);
-        console.log("ŠTA IMA SALA U sebi:", salaData.tipoviDogadjaja);
 
         setSala(salaData);
         setSveKarakteristike(karData);

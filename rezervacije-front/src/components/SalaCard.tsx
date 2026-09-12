@@ -18,7 +18,6 @@ export default function SalaCard({
   isAdmin?: boolean;
   onDelete?: () => void;
 }) {
-  console.log("Šta je sala?", sala); // <--- DODAJ OVO
   const [isHovered, setIsHovered] = useState(false);
 
 
