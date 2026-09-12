@@ -1,0 +1,60 @@
+@import "tailwindcss";
+
+
+
+:root {
+  /* Svetlo roze pozadina za celu stranicu (veoma nežna) */
+  --bg: 255 245 247; 
+  --fg: 71 39 53; /* Tamno braon-roze za tekst, da bude čitljivije od crne */
+  --muted: 157 113 131;
+  
+  /* TVOJE NOVE BOJE */
+  --card: 255 231 237;   /* Svetlo roze za samu karticu */
+  --border: 244 172 193; /* Malo tamnija roze za ivice (border) */
+  
+  --shadow: 0 10px 25px rgba(219, 39, 119, 0.1); /* Senka koja vuče na roze */
+}
+.dark {
+  --bg: 30 10 20;       /* Skoro crna, tamno bordo */
+  --fg: 255 200 220;    /* Svetlo roze tekst */
+  --muted: 180 100 130;
+  --card: 50 15 30;     /* Tamno roze/ljubičasta kartica */
+  --border: 120 40 70;  /* Jača bordo za ivice */
+  --shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+}
+
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  background: rgb(var(--bg));
+  color: rgb(var(--fg));
+  font-family: var(--font-geist-sans), ui-sans-serif, system-ui, -apple-system, "Segoe UI", "Noto Sans", "Apple Color Emoji", "Segoe UI Emoji";
+  -webkit-font-smoothing: antialiased;
+}
+
+.container-app {
+  max-width: 1120px;
+  margin: 0 auto;
+  padding: 0 16px;
+}
+
+/* Kartica koja koristi tvoje nove roze varijable */
+.card {
+  background: rgb(var(--card));
+  border: 2px solid rgb(var(--border)); /* Povećao sam na 2px da se bolje vidi tamnija roze */
+  border-radius: 20px; /* Malo zaobljenije ivice za moderniji izgled */
+  box-shadow: var(--shadow);
+  padding: 20px;
+  transition: all 0.3s ease;
+}
+
+
+.card-hover:hover {
+  transform: translateY(-5px); /* Mala animacija da "skoči" kad pređeš mišem */
+  border-color: rgb(219 39 119); /* Još tamnija roze na hover (pink-600) */
+  box-shadow: 0 15px 35px rgba(219, 39, 119, 0.2);
+}

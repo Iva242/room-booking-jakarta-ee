@@ -1,0 +1,32 @@
+### Java / Maven ###
+target/
+*.class
+*.jar
+!.mvn/wrapper/maven-wrapper.jar
+
+### Tajne vrednosti — NE ide u repozitorijum ###
+# Sadrzi JWT secret, lozinku za mejl i pristup bazi.
+# Kopiraj application.properties.example i popuni svojim vrednostima.
+rezervacije/rezervacije/src/main/resources/application.properties
+
+### Node / Next.js ###
+node_modules/
+.next/
+out/
+.env*.local
+next-env.d.ts
+
+### Logovi ###
+*.log
+npm-debug.log*
+
+### IDE ###
+nbproject/private/
+.idea/
+.vscode/
+*.iml
+
+### OS ###
+Thumbs.db
+.DS_Store
+desktop.ini

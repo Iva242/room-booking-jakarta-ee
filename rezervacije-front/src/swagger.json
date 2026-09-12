@@ -1,0 +1,132 @@
+{
+  "openapi": "3.0.0",
+  "info": {
+    "title": "API Rezervacija Sala",
+    "version": "1.0.0",
+    "description": "Dokumentacija za Laravel Backend API sistem rezervacija sala"
+  },
+  "servers": [
+    {
+      "url": "http://localhost:8080/api",
+      "description": "Lokalni razvojni server (Laravel)"
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "bearerFormat": "JWT"
+      }
+    }
+  },
+  "paths": {
+    "/login": {
+      "post": {
+        "summary": "Prijava korisnika",
+        "tags": ["Auth"],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "email": { "type": "string" },
+                  "password": { "type": "string" }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": { "description": "Uspešan login" },
+          "401": { "description": "Pogrešni podaci" }
+        }
+      }
+    },
+    "/register": {
+      "post": {
+        "summary": "Registracija novog korisnika",
+        "tags": ["Auth"],
+        "responses": {
+          "201": { "description": "Uspešna registracija" }
+        }
+      }
+    },
+    "/sale": {
+      "get": {
+        "summary": "Lista svih dostupnih sala",
+        "tags": ["Sale"],
+        "responses": {
+          "200": { "description": "Niz objekata sala" }
+        }
+      }
+    },
+    "/sale/{id}": {
+      "get": {
+        "summary": "Pojedinačna sala po ID-ju",
+        "tags": ["Sale"],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Podaci o sali" }
+        }
+      }
+    },
+    "/rezervacije": {
+      "get": {
+        "summary": "Sve rezervacije (Admin vidi sve, korisnik samo svoje)",
+        "tags": ["Rezervacije"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Niz rezervacija" }
+        }
+      },
+      "post": {
+        "summary": "Kreiranje nove rezervacije",
+        "tags": ["Rezervacije"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "201": { "description": "Rezervacija uspešno kreirana" }
+        }
+      }
+    },
+    "/rezervacije/{id}/otkazi": {
+      "put": {
+        "summary": "Otkazivanje postojeće rezervacije",
+        "tags": ["Rezervacije"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Rezervacija otkazana" }
+        }
+      }
+    },
+    "/users": {
+      "get": {
+        "summary": "Lista svih korisnika (Admin)",
+        "tags": ["Admin"],
+        "security": [{ "bearerAuth": [] }],
+        "responses": {
+          "200": { "description": "Niz korisnika" }
+        }
+      }
+    },
+    "/users/{id}/ban": {
+      "put": {
+        "summary": "Banovanje korisnika",
+        "tags": ["Admin"],
+        "security": [{ "bearerAuth": [] }],
+        "parameters": [
+          { "name": "id", "in": "path", "required": true, "schema": { "type": "integer" } }
+        ],
+        "responses": {
+          "200": { "description": "Korisnik banovan" }
+        }
+      }
+    }
+  }
+}

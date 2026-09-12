@@ -1,0 +1,25 @@
+# Kopiraj ovaj fajl kao application.properties i popuni svojim vrednostima.
+# application.properties se NE cuva u git-u jer sadrzi tajne vrednosti.
+
+spring.datasource.url=jdbc:mysql://127.0.0.1:3306/rezervacije_sala
+spring.datasource.username=root
+spring.datasource.password=
+
+spring.jpa.hibernate.ddl-auto=update
+spring.jpa.show-sql=true
+spring.jackson.serialization.fail-on-empty-beans=false
+spring.jpa.open-in-view=false
+
+logging.level.org.springframework.security=DEBUG
+
+# JWT podesavanja — generisi sopstveni kljuc, najmanje 64 nasumicna karaktera
+app.jwtSecret=PROMENI_ME
+app.jwtExpirationMs=86400000
+
+# SMTP (npr. Mailtrap sandbox nalog)
+spring.mail.host=sandbox.smtp.mailtrap.io
+spring.mail.port=2525
+spring.mail.username=PROMENI_ME
+spring.mail.password=PROMENI_ME
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
