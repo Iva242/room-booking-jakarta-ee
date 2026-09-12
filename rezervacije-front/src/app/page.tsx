@@ -152,30 +152,12 @@ export default function HomePage() {
             onClose={() => setSelectedSala(null)}
             onConfirm={async (podaci) => {
               try {
-                const token = localStorage.getItem("token");
-                const res = await fetch(
-                  "http://localhost:8080/api/rezervacije",
-                  {
-                    method: "POST",
-                    headers: {
-                      "Content-Type": "application/json",
-                      Authorization: `Bearer ${token}`,
-                    },
-                    body: JSON.stringify(podaci),
-                  },
-                );
-
-                if (res.ok) {
-                  alert("Rezervacija uspešno poslata!");
-                  setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
-                } else {
-                  alert(
-                    "Greška pri rezervaciji. Proverite da li ste ulogovani.",
-                  );
-                }
-              } catch (err) {
+                await api.createRezervacija(podaci);
+                alert("Rezervacija uspešno poslata!");
+                setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
+              } catch (err: any) {
                 console.error("Greška:", err);
-                alert("Došlo je do greške sa serverom.");
+                alert(err?.message || "Došlo je do greške sa serverom.");
               }
             }}
           />

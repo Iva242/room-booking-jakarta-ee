@@ -84,15 +84,9 @@ export default function SalaDetalji({ params }: PageProps) {
         setLoading(true);
         const [salaData, karData, tipData] = await Promise.all([
           api.getSalaById(Number(id)),
-          fetch("http://localhost:8080/api/karakteristike").then((r) =>
-            r.json(),
-          ),
-          fetch("http://localhost:8080/api/tipovi-dogadjaja").then((r) =>
-            r.json(),
-          ),
+          api.getKarakteristike(),
+          api.getTipovi(),
         ]);
-
-        // OVO DODAJ U FETCH FUNKCIJU
 
         setSala(salaData);
         setSveKarakteristike(karData);
@@ -136,29 +130,13 @@ export default function SalaDetalji({ params }: PageProps) {
     };
 
     try {
-      const token = localStorage.getItem("token");
-      const res = await fetch(
-        `http://localhost:8080/api/sale/${sala?.idSale}`,
-        {
-          method: "PUT",
-          headers: {
-            "Content-Type": "application/json",
-            Authorization: `Bearer ${token}`,
-          },
-          body: JSON.stringify(updatedData),
-        },
-      );
-
-      if (res.ok) {
-        const novaSala = await res.json();
-        setSala(novaSala);
-        setIsEditModalOpen(false);
-        alert("Sala uspešno ažurirana!");
-      } else {
-        alert("Greška pri izmeni.");
-      }
-    } catch (err) {
+      const novaSala = await api.updateSala(Number(sala?.idSale), updatedData);
+      setSala(novaSala);
+      setIsEditModalOpen(false);
+      alert("Sala uspešno ažurirana!");
+    } catch (err: any) {
       console.error(err);
+      alert(err?.response?.data?.message || "Greška pri izmeni.");
     }
   };
 
@@ -381,32 +359,14 @@ export default function SalaDetalji({ params }: PageProps) {
           tipoviDogadjaja={sala.tipoviDogadjaja}
           onClose={() => setIsRezervacijaModalOpen(false)}
           onConfirm={async (podaci) => {
-            const token = localStorage.getItem("token");
-
             try {
-              const res = await fetch("http://localhost:8080/api/rezervacije", {
-                method: "POST",
-                headers: {
-                  "Content-Type": "application/json",
-                  Authorization: `Bearer ${token}`,
-                },
-                body: JSON.stringify(podaci),
-              });
-
-              // Uvek čitamo tekstualni odgovor, jer backend vraća poruku greške kao string
-              const responseText = await res.text();
-
-              if (res.ok) {
-                alert("Rezervacija uspešno poslata!");
-                setIsRezervacijaModalOpen(false);
-              } else {
-                // Ako nije OK, samo izbaci taj tekst kao alert
-                // Ovo pokriva "Sala je zauzeta..." i sve druge poruke koje backend pošalje
-                alert(responseText || "Došlo je do greške pri rezervaciji.");
-              }
-            } catch (error) {
-              console.error("Greška pri mreži:", error);
-              alert("Došlo je do problema sa konekcijom.");
+              await api.createRezervacija(podaci);
+              alert("Rezervacija uspešno poslata!");
+              setIsRezervacijaModalOpen(false);
+            } catch (error: any) {
+              // backend salje poruku greske kao obican tekst, npr. "Sala je zauzeta..."
+              console.error(error);
+              alert(error?.message || "Došlo je do greške pri rezervaciji.");
             }
           }}
         />

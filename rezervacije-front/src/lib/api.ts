@@ -1,4 +1,5 @@
-const BASE_URL = "http://localhost:8080/api";
+export const BASE_URL =
+  process.env.NEXT_PUBLIC_API_URL ?? "http://localhost:8080/api";
 
 // Helper za headere
 const getHeaders = (isAuth = true) => {
@@ -93,13 +94,9 @@ export const api = {
   },
 
   getSalaById: async (id: number) => {
-    const res = await fetch(`http://localhost:8080/api/sale/${id}`, {
+    const res = await fetch(`${BASE_URL}/sale/${id}`, {
       method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        // Ako ti treba token za pregled detalja, dodaj ga ovde:
-        // "Authorization": `Bearer ${localStorage.getItem("token")}`
-      },
+      headers: getHeaders(false),
     });
 
     if (!res.ok) {
