@@ -111,6 +111,7 @@ public class RezervacijaService {
                 .collect(Collectors.toList());
     }
 
+    @Transactional
     public void otkaziRezervaciju(Long id, String korisnickoIme) {
         Rezervacija rezervacija = rezervacijaRepository.findById(id);
 
@@ -138,6 +139,7 @@ public class RezervacijaService {
         rezervacijaRepository.save(rezervacija);
     }
 
+    @Transactional
     public void potvrdiRezervaciju(Long id) {
         Rezervacija rezervacija = rezervacijaRepository.findById(id);
 
