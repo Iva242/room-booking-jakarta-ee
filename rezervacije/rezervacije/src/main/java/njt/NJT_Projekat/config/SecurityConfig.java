@@ -44,6 +44,7 @@ public class SecurityConfig {
                         
                 // 1. JAVNE RUTE 
                 .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll() // Dozvoli OPTIONS zahtev
+                .requestMatchers("/error").permitAll()
                 .requestMatchers("/api/auth/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/sale/**").permitAll()
                 .requestMatchers(HttpMethod.GET, "/api/karakteristike").permitAll()
