@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.Karakteristika;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +22,9 @@ public class KarakteristikaRepository implements MyAppRepository<Karakteristika,
     }
 
     @Override
-    public Karakteristika findById(Long id) throws Exception {
+    public Karakteristika findById(Long id) {
         Karakteristika k = em.find(Karakteristika.class, id);
-        if (k == null) throw new Exception("Karakteristika sa ID-jem " + id + " nije pronađena.");
+        if (k == null) throw new EntitetNijePronadjenException("Karakteristika", id);
         return k;
     }
 

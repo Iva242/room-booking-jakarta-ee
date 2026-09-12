@@ -6,6 +6,7 @@ import jakarta.transaction.Transactional;
 import java.util.List;
 import java.util.Optional;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,9 +23,9 @@ public class KorisnikRepository implements MyAppRepository<Korisnik, Long> {
     }
 
     @Override
-    public Korisnik findById(Long id) throws Exception {
+    public Korisnik findById(Long id) {
         Korisnik k = em.find(Korisnik.class, id);
-        if (k == null) throw new Exception("Korisnik sa ID-jem " + id + " nije pronađen.");
+        if (k == null) throw new EntitetNijePronadjenException("Korisnik", id);
         return k;
     }
 

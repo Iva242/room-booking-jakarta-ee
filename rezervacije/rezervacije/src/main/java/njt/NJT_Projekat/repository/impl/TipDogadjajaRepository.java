@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.TipDogadjaja;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
 
@@ -21,9 +22,9 @@ public class TipDogadjajaRepository implements MyAppRepository<TipDogadjaja, Lon
     }
 
     @Override
-    public TipDogadjaja findById(Long id) throws Exception {
+    public TipDogadjaja findById(Long id) {
         TipDogadjaja t = em.find(TipDogadjaja.class, id);
-        if (t == null) throw new Exception("Tip događaja sa ID-jem " + id + " nije pronađen.");
+        if (t == null) throw new EntitetNijePronadjenException("Tip dogadjaja", id);
         return t;
     }
 

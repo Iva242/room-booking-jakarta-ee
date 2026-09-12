@@ -28,13 +28,7 @@ public class KarakteristikaController {
 
     // POST http://localhost:8080/api/karakteristike
     @PostMapping
-    public ResponseEntity<?> kreiraj(@RequestBody KarakteristikaDto karakteristikaDto) {
-        try {
-            
-            KarakteristikaDto nova = karakteristikaService.kreirajKarakteristiku(karakteristikaDto);
-            return ResponseEntity.ok(nova);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<KarakteristikaDto> kreiraj(@RequestBody KarakteristikaDto karakteristikaDto) {
+        return ResponseEntity.ok(karakteristikaService.kreirajKarakteristiku(karakteristikaDto));
     }
 }

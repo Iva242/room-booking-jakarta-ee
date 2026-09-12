@@ -70,22 +70,17 @@ public class AuthController {
     }
 
     @PostMapping("/register")
-    public ResponseEntity<?> register(@Valid @RequestBody RegisterRequest request) {
-        try {
-            // pakujemo podatke iz RegisterRequest-a u entitet Korisnik
-            Korisnik noviKorisnik = new Korisnik();
-            noviKorisnik.setKorisnickoIme(request.getKorisnickoIme());
-            noviKorisnik.setLozinka(request.getLozinka());
-            noviKorisnik.setIme(request.getIme());
-            noviKorisnik.setPrezime(request.getPrezime());
-            noviKorisnik.setEmail(request.getEmail());
+    public ResponseEntity<KorisnikDto> register(@Valid @RequestBody RegisterRequest request) {
+        // pakujemo podatke iz RegisterRequest-a u entitet Korisnik
+        Korisnik noviKorisnik = new Korisnik();
+        noviKorisnik.setKorisnickoIme(request.getKorisnickoIme());
+        noviKorisnik.setLozinka(request.getLozinka());
+        noviKorisnik.setIme(request.getIme());
+        noviKorisnik.setPrezime(request.getPrezime());
+        noviKorisnik.setEmail(request.getEmail());
 
-            // Korisnik servis nam obezbedjuje validaciju, enkripciju i generisanje tokena
-            KorisnikDto kreiran = korisnikService.registrujKorisnika(noviKorisnik);
-            return ResponseEntity.ok(kreiran);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+        // Korisnik servis nam obezbedjuje validaciju, enkripciju i generisanje tokena
+        return ResponseEntity.ok(korisnikService.registrujKorisnika(noviKorisnik));
     }
 
 

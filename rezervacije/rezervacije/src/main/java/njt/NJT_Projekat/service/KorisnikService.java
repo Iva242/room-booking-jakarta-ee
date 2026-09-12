@@ -3,6 +3,10 @@ package njt.NJT_Projekat.service;
 import jakarta.transaction.Transactional;
 import njt.NJT_Projekat.dto.impl.KorisnikDto;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
+import njt.NJT_Projekat.exception.NemaDozvoluException;
+import njt.NJT_Projekat.exception.NevalidanZahtevException;
+import njt.NJT_Projekat.exception.TerminZauzetException;
 import njt.NJT_Projekat.entity.auth.KorisnikVerificationToken;
 import njt.NJT_Projekat.repository.impl.KorisnikRepository;
 import njt.NJT_Projekat.repository.auth.KorisnikVerificationTokenRepository;
@@ -40,7 +44,7 @@ public class KorisnikService {
     public KorisnikDto registrujKorisnika(Korisnik korisnik) {
         Optional<Korisnik> postojeci = korisnikRepository.findByKorisnickoIme(korisnik.getKorisnickoIme());
         if (postojeci.isPresent()) {
-            throw new RuntimeException("Korisničko ime je zauzeto!");
+            throw new TerminZauzetException("Korisničko ime je zauzeto!");
         }
 
         if (korisnik.getUloga() == null || korisnik.getUloga().isEmpty()) {
@@ -78,11 +82,11 @@ public class KorisnikService {
     public void verifikujKorisnika(String tokenValue) {
         KorisnikVerificationToken token = tokenRepository.findByToken(tokenValue);
         if (token == null) {
-            throw new RuntimeException("Nevalidan verifikacioni token!");
+            throw new NevalidanZahtevException("Nevalidan verifikacioni token!");
         }
         if (token.isExpired()) {
             tokenRepository.delete(token);
-            throw new RuntimeException("Verifikacioni token je istekao!");
+            throw new NevalidanZahtevException("Verifikacioni token je istekao!");
         }
 
         Korisnik korisnik = token.getKorisnik();
@@ -94,14 +98,14 @@ public class KorisnikService {
 
     public KorisnikDto login(String korisnickoIme, String lozinka) {
         Korisnik korisnik = korisnikRepository.findByKorisnickoIme(korisnickoIme)
-                .orElseThrow(() -> new RuntimeException("Korisnik sa tim korisničkim imenom ne postoji!"));
+                .orElseThrow(() -> new EntitetNijePronadjenException("Korisnik sa tim korisničkim imenom ne postoji!"));
 
         if (!korisnik.isAktivan()) {
-            throw new RuntimeException("Nalog nije verifikovan! Molimo potvrdite vašu registraciju klikom na link.");
+            throw new NemaDozvoluException("Nalog nije verifikovan! Molimo potvrdite vašu registraciju klikom na link.");
         }
 
         if (!passwordEncoder.matches(lozinka, korisnik.getLozinka())) { 
-            throw new RuntimeException("Pogrešna lozinka!");
+            throw new NevalidanZahtevException("Pogrešna lozinka!");
         }
 
         return korisnikMapper.toDto(korisnik);

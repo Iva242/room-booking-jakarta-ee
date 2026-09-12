@@ -23,18 +23,8 @@ public class RezervacijaController {
 
     // kreiranje rezervacije: POST http://localhost:8080/api/rezervacije
     @PostMapping
-    public ResponseEntity<?> kreiraj(@RequestBody RezervacijaDto rezervacijaDto) {
-        
-        System.out.println("Primljen DTO: " + rezervacijaDto);
-        if (rezervacijaDto.getIdSale()== null) {
-            System.out.println("UPOZORENJE: Sala je NULL!");
-        }
-        try {
-            RezervacijaDto nova = rezervacijaService.kreirajRezervaciju(rezervacijaDto);
-            return ResponseEntity.ok(nova);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<RezervacijaDto> kreiraj(@RequestBody RezervacijaDto rezervacijaDto) {
+        return ResponseEntity.ok(rezervacijaService.kreirajRezervaciju(rezervacijaDto));
     }
 
     // pregled svih rezervacija: GET http://localhost:8080/api/rezervacije
@@ -53,24 +43,16 @@ public class RezervacijaController {
     // otkazivanje rezervacije: DELETE http://localhost:8080/api/rezervacije/{id}
     // (Korisnik otkazuje svoju, Admin može otkazati bilo koju)
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> otkazi(@PathVariable Long id, Principal principal) {
-        try {
-            // Prosleđujemo i ID rezervacije i ko je trenutno ulogovan
-            rezervacijaService.otkaziRezervaciju(id, principal.getName());
-            return ResponseEntity.ok("Rezervacija je uspešno otkazana.");
-        } catch (Exception e) {
-            return ResponseEntity.status(403).body(e.getMessage()); // 403 Forbidden
-        }
+    public ResponseEntity<Void> otkazi(@PathVariable Long id, Principal principal) {
+        // Prosleđujemo i ID rezervacije i ko je trenutno ulogovan
+        rezervacijaService.otkaziRezervaciju(id, principal.getName());
+        return ResponseEntity.noContent().build();
     }
 
     // potvrđivanje rezervacije: PUT http://localhost:8080/api/rezervacije/potvrdi/5
     @PutMapping("/potvrdi/{id}")
-    public ResponseEntity<?> potvrdi(@PathVariable Long id) {
-        try {
-            rezervacijaService.potvrdiRezervaciju(id);
-            return ResponseEntity.ok("Rezervacija je uspešno potvrđena.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> potvrdi(@PathVariable Long id) {
+        rezervacijaService.potvrdiRezervaciju(id);
+        return ResponseEntity.noContent().build();
     }
 }

@@ -13,6 +13,8 @@ import njt.NJT_Projekat.entity.impl.TipDogadjaja;
 import java.util.List;
 import java.util.stream.Collectors;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
+import njt.NJT_Projekat.exception.TerminZauzetException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.mapper.impl.KarakteristikaMapper;
 import njt.NJT_Projekat.mapper.impl.TipDogadjajaMapper;
@@ -53,7 +55,7 @@ public class SalaService {
                 .collect(Collectors.toList());
     }
 
-    public SalaDto vratiPoId(Long id) throws Exception {
+    public SalaDto vratiPoId(Long id) {
 
         Sala sala = salaRepository.findById(id);
         return salaMapper.toDto(sala);
@@ -61,7 +63,7 @@ public class SalaService {
 
 
     @Transactional
-    public SalaDto kreiraj(SalaDto salaDto) throws Exception {
+    public SalaDto kreiraj(SalaDto salaDto) {
         // mapiramo osnovne podatke
         Sala sala = salaMapper.toEntity(salaDto);
 
@@ -74,7 +76,7 @@ public class SalaService {
             for (var kDto : salaDto.getKarakteristike()) {
                 Karakteristika k = karakteristikaRepository.findById(kDto.getIdKarakteristike());
                 if (k == null) {
-                    throw new Exception("Karakteristika sa ID " + kDto.getIdKarakteristike() + " ne postoji");
+                    throw new EntitetNijePronadjenException("Karakteristika", kDto.getIdKarakteristike());
                 }
                 sala.getKarakteristike().add(k);
             }
@@ -85,7 +87,7 @@ public class SalaService {
             for (var tDto : salaDto.getTipoviDogadjaja()) {
                 TipDogadjaja t = tipRepository.findById(tDto.getIdTipDogadjaja());
                 if (t == null) {
-                    throw new Exception("Tip događaja sa ID " + tDto.getIdTipDogadjaja() + " ne postoji");
+                    throw new EntitetNijePronadjenException("Tip događaja", tDto.getIdTipDogadjaja());
                 }
                 sala.getTipoviDogadjaja().add(t);
             }
@@ -105,10 +107,10 @@ public class SalaService {
     }
 
     @Transactional
-    public SalaDto izmeni(Long id, SalaDto salaDto) throws Exception {
+    public SalaDto izmeni(Long id, SalaDto salaDto) {
         Sala postojecaSala = salaRepository.findById(id);
         if (postojecaSala == null) {
-            throw new Exception("Sala sa ID " + id + " nije pronađena.");
+            throw new EntitetNijePronadjenException("Sala", id);
         }
 
         // azuriraj osnovna polja
@@ -129,7 +131,7 @@ public class SalaService {
 
                 // da li postoji
                 if (k == null) {
-                    throw new RuntimeException("Karakteristika sa ID " + kDto.getIdKarakteristike() + " ne postoji");
+                    throw new EntitetNijePronadjenException("Karakteristika", kDto.getIdKarakteristike());
                 }
                 praveKarakteristike.add(k);
             }
@@ -144,7 +146,7 @@ public class SalaService {
                 TipDogadjaja t = tipRepository.findById(tDto.getIdTipDogadjaja());
 
                 if (t == null) {
-                    throw new RuntimeException("Tip događaja sa ID " + tDto.getIdTipDogadjaja() + " ne postoji");
+                    throw new EntitetNijePronadjenException("Tip događaja", tDto.getIdTipDogadjaja());
                 }
                 praviTipovi.add(t);
             }
@@ -160,14 +162,14 @@ public class SalaService {
 
     
     @Transactional
-    public void obrisi(Long id) throws Exception {
+    public void obrisi(Long id) {
         Sala sala = salaRepository.findById(id); 
 
         // provera rezervacije
         List<Rezervacija> rezervacije = rezervacijaRepository.findBySalaId(id);
         for (Rezervacija r : rezervacije) {
             if (r.getStatus() != StatusRezervacije.ZAVRSENA && r.getStatus() != StatusRezervacije.OTKAZANA) {
-                throw new Exception("Ne možeš obrisati salu jer postoje aktivne rezervacije!");
+                throw new TerminZauzetException("Sala se ne može obrisati jer postoje aktivne rezervacije.");
             }
         }
         rezervacijaRepository.deleteAll(rezervacije);

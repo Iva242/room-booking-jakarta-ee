@@ -28,12 +28,7 @@ public class TipDogadjajaController {
 
     // POST http://localhost:8080/api/tipovi-dogadjaja
     @PostMapping
-    public ResponseEntity<?> kreiraj(@RequestBody TipDogadjajaDto tipDogadjajaDto) {
-        try {
-            TipDogadjajaDto novi = tipDogadjajaService.kreiraj(tipDogadjajaDto);
-            return ResponseEntity.ok(novi);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<TipDogadjajaDto> kreiraj(@RequestBody TipDogadjajaDto tipDogadjajaDto) {
+        return ResponseEntity.ok(tipDogadjajaService.kreiraj(tipDogadjajaDto));
     }
 }

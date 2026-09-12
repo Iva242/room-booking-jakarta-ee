@@ -6,6 +6,10 @@ import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.entity.impl.Sala;
 import njt.NJT_Projekat.entity.impl.TipDogadjaja;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
+import njt.NJT_Projekat.exception.NevalidanZahtevException;
+import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.NemaDozvoluException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.repository.impl.RezervacijaRepository;
 import njt.NJT_Projekat.repository.impl.SalaRepository;
@@ -41,31 +45,31 @@ public class RezervacijaService {
     }
 
     @Transactional
-    public RezervacijaDto kreirajRezervaciju(RezervacijaDto dto) throws Exception {
+    public RezervacijaDto kreirajRezervaciju(RezervacijaDto dto) {
         // proveravamo da li podaci postoje
         if (dto.getKorisnik() == null || dto.getTipDogadjaja() == null) {
-            throw new Exception("Korisnik ili Tip Dogadjaja nisu prosledjeni.");
+            throw new NevalidanZahtevException("Korisnik ili tip događaja nisu prosleđeni.");
         }
 
         // povlacenje entiteta iz baze (navigacija kroz DTO klasu)
         Sala sala = salaRepository.findById(dto.getIdSale());
         if (sala == null) {
-            throw new Exception("Sala nije pronađena");
+            throw new EntitetNijePronadjenException("Sala nije pronađena.");
         }
 
         TipDogadjaja tip = tipDogadjajaRepository.findById(dto.getTipDogadjaja().getIdTipDogadjaja());
         if (tip == null) {
-            throw new Exception("Tip događaja nije pronađen");
+            throw new EntitetNijePronadjenException("Tip događaja nije pronađen.");
         }
 
         Korisnik korisnik = korisnikRepository.findById(dto.getKorisnik().getId());
         if (korisnik == null) {
-            throw new Exception("Korisnik nije pronađen");
+            throw new EntitetNijePronadjenException("Korisnik nije pronađen.");
         }
 
         // proveravamo preklapanje termina
         if (rezervacijaRepository.existsOverlapping(dto.getIdSale(), dto.getPocetak(), dto.getKraj())) {
-            throw new Exception("Sala je zauzeta u tom terminu.");
+            throw new TerminZauzetException("Sala je zauzeta u tom terminu.");
         }
 
         // kreiramo rezervaciju
@@ -107,16 +111,16 @@ public class RezervacijaService {
                 .collect(Collectors.toList());
     }
 
-    public void otkaziRezervaciju(Long id, String korisnickoIme) throws Exception {
+    public void otkaziRezervaciju(Long id, String korisnickoIme) {
         Rezervacija rezervacija = rezervacijaRepository.findById(id);
 
         if (rezervacija == null) {
-            throw new Exception("Rezervacija nije pronađena.");
+            throw new EntitetNijePronadjenException("Rezervacija nije pronađena.");
         }
 
         // trazimo korisnika koji salje zahtev
         Korisnik currentUser = korisnikRepository.findByKorisnickoIme(korisnickoIme)
-                .orElseThrow(() -> new Exception("Korisnik nije nađen."));
+                .orElseThrow(() -> new EntitetNijePronadjenException("Korisnik nije pronađen."));
 
         // provera vlasnistva
         boolean isVlasnik = rezervacija.getKorisnik().getKorisnickoIme().equals(korisnickoIme);
@@ -127,19 +131,19 @@ public class RezervacijaService {
 
         // dozvoljeno brisanje ako je vlanik rezervacije ili admin
         if (!isVlasnik && !isAdmin) {
-            throw new Exception("Nemate dozvolu da otkažete tuđu rezervaciju!");
+            throw new NemaDozvoluException("Nemate dozvolu da otkažete tuđu rezervaciju!");
         }
 
         rezervacija.setStatus(StatusRezervacije.OTKAZANA);
         rezervacijaRepository.save(rezervacija);
     }
 
-    public void potvrdiRezervaciju(Long id) throws Exception {
+    public void potvrdiRezervaciju(Long id) {
         Rezervacija rezervacija = rezervacijaRepository.findById(id);
 
         // proveravamo da li uopste postoji rezervacija
         if (rezervacija == null) {
-            throw new Exception("Rezervacija sa ID-jem " + id + " nije pronađena.");
+            throw new EntitetNijePronadjenException("Rezervacija", id);
         }
 
         rezervacija.setStatus(StatusRezervacije.POTVRDJENA);

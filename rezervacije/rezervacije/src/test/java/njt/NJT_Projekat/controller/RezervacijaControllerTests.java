@@ -7,6 +7,10 @@ import njt.NJT_Projekat.config.SecurityConfig;
 import njt.NJT_Projekat.dto.impl.KorisnikDto;
 import njt.NJT_Projekat.dto.impl.RezervacijaDto;
 import njt.NJT_Projekat.dto.impl.TipDogadjajaDto;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
+import njt.NJT_Projekat.exception.GlobalniObradjivacGresaka;
+import njt.NJT_Projekat.exception.NemaDozvoluException;
+import njt.NJT_Projekat.exception.TerminZauzetException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.security.AppUserDetailsService;
 import njt.NJT_Projekat.security.JwtService;
@@ -26,7 +30,7 @@ import org.springframework.test.web.servlet.request.RequestPostProcessor;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 @WebMvcTest(RezervacijaController.class)
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, GlobalniObradjivacGresaka.class})
 public class RezervacijaControllerTests {
 
     @Autowired
@@ -95,14 +99,16 @@ public class RezervacijaControllerTests {
     public void kreirajZauzetTerminFailureTest() throws Exception {
         RezervacijaDto dto = rezervacijaDto();
         Mockito.when(rezervacijaService.kreirajRezervaciju(Mockito.any(RezervacijaDto.class)))
-                .thenThrow(new Exception("Sala je zauzeta u tom terminu."));
+                .thenThrow(new TerminZauzetException("Sala je zauzeta u tom terminu."));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/rezervacije")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)
                 .content(objectMapper.writeValueAsString(dto))
                 .with(korisnik()))
-                .andExpect(MockMvcResultMatchers.status().isBadRequest())
-                .andExpect(MockMvcResultMatchers.content().string("Sala je zauzeta u tom terminu."));
+                .andExpect(MockMvcResultMatchers.status().isConflict())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.poruka",
+                        CoreMatchers.equalTo("Sala je zauzeta u tom terminu.")))
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.equalTo(409)));
     }
 
     @Test
@@ -114,6 +120,19 @@ public class RezervacijaControllerTests {
 
         Mockito.verify(rezervacijaService, Mockito.never())
                 .kreirajRezervaciju(Mockito.any(RezervacijaDto.class));
+    }
+
+    @Test
+    public void kreirajZaNepostojecuSaluFailureTest() throws Exception {
+        Mockito.when(rezervacijaService.kreirajRezervaciju(Mockito.any(RezervacijaDto.class)))
+                .thenThrow(new EntitetNijePronadjenException("Sala nije pronađena."));
+
+        mockMvc.perform(MockMvcRequestBuilders.post("/api/rezervacije")
+                .contentType(MediaType.APPLICATION_JSON_VALUE)
+                .content(objectMapper.writeValueAsString(rezervacijaDto()))
+                .with(korisnik()))
+                .andExpect(MockMvcResultMatchers.status().isNotFound())
+                .andExpect(MockMvcResultMatchers.jsonPath("$.status", CoreMatchers.equalTo(404)));
     }
 
     @Test
@@ -149,7 +168,7 @@ public class RezervacijaControllerTests {
     @Test
     public void potvrdiTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.put("/api/rezervacije/potvrdi/10").with(admin()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         Mockito.verify(rezervacijaService, Mockito.times(1)).potvrdiRezervaciju(10L);
     }
@@ -166,19 +185,19 @@ public class RezervacijaControllerTests {
     @Test
     public void otkaziTest() throws Exception {
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/rezervacije/10").with(korisnik()))
-                .andExpect(MockMvcResultMatchers.status().isOk());
+                .andExpect(MockMvcResultMatchers.status().isNoContent());
 
         Mockito.verify(rezervacijaService, Mockito.times(1)).otkaziRezervaciju(10L, "ana");
     }
 
     @Test
     public void otkaziTudjuRezervacijuFailureTest() throws Exception {
-        Mockito.doThrow(new Exception("Nemate dozvolu da otkažete tuđu rezervaciju!"))
+        Mockito.doThrow(new NemaDozvoluException("Nemate dozvolu da otkažete tuđu rezervaciju!"))
                 .when(rezervacijaService).otkaziRezervaciju(10L, "ana");
 
         mockMvc.perform(MockMvcRequestBuilders.delete("/api/rezervacije/10").with(korisnik()))
                 .andExpect(MockMvcResultMatchers.status().isForbidden())
-                .andExpect(MockMvcResultMatchers.content()
-                        .string("Nemate dozvolu da otkažete tuđu rezervaciju!"));
+                .andExpect(MockMvcResultMatchers.jsonPath("$.poruka",
+                        CoreMatchers.equalTo("Nemate dozvolu da otkažete tuđu rezervaciju!")));
     }
 }

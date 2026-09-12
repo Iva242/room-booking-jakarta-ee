@@ -23,19 +23,13 @@ public class SalaController {
     // Pregled svih sala: GET http://localhost:8080/api/sale
     @GetMapping
     public ResponseEntity<List<SalaDto>> vratiSve() {
-        System.out.println("--- PRIMLJEN ZAHTEV ZA VRATI SVE ---");
         return ResponseEntity.ok(salaService.vratiSve());
     }
 
     // Pregled jedne sale: GET http://localhost:8080/api/sale/1
     @GetMapping("/{id}")
-    public ResponseEntity<?> vratiPoId(@PathVariable Long id) {
-        try {
-            SalaDto sala = salaService.vratiPoId(id);
-            return ResponseEntity.ok(sala);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<SalaDto> vratiPoId(@PathVariable Long id) {
+        return ResponseEntity.ok(salaService.vratiPoId(id));
     }
 
     // ruta za pretragu sala: GET http://localhost:8080/api/sale/pretraga?term=Beograd
@@ -46,34 +40,20 @@ public class SalaController {
 
     // ruta za dodavanje nove sale: POST http://localhost:8080/api/sale
     @PostMapping
-    public ResponseEntity<?> kreiraj(@RequestBody SalaDto salaDto) {
-        try {
-            SalaDto nova = salaService.kreiraj(salaDto);
-            return ResponseEntity.ok(nova);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<SalaDto> kreiraj(@RequestBody SalaDto salaDto) {
+        return ResponseEntity.ok(salaService.kreiraj(salaDto));
     }
 
     // ruta za izmenu sale: PUT http://localhost:8080/api/sale/1
     @PutMapping("/{id}")
-    public ResponseEntity<?> izmeni(@PathVariable Long id, @RequestBody SalaDto salaDto) {
-        try {
-            SalaDto izmenjena = salaService.izmeni(id, salaDto);
-            return ResponseEntity.ok(izmenjena);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<SalaDto> izmeni(@PathVariable Long id, @RequestBody SalaDto salaDto) {
+        return ResponseEntity.ok(salaService.izmeni(id, salaDto));
     }
 
     // ruta za brisanje sale: DELETE http://localhost:8080/api/sale/1
     @DeleteMapping("/{id}")
-    public ResponseEntity<?> obrisi(@PathVariable Long id) {
-        try {
-            salaService.obrisi(id);
-            return ResponseEntity.ok("Sala je uspešno obrisana.");
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().body(e.getMessage());
-        }
+    public ResponseEntity<Void> obrisi(@PathVariable Long id) {
+        salaService.obrisi(id);
+        return ResponseEntity.noContent().build();
     }
 }

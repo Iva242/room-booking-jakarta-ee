@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.util.List;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
 
@@ -23,9 +24,9 @@ public class RezervacijaRepository implements MyAppRepository<Rezervacija, Long>
     }
 
     @Override
-    public Rezervacija findById(Long id) throws Exception {
+    public Rezervacija findById(Long id) {
         Rezervacija r = em.find(Rezervacija.class, id);
-        if (r == null) throw new Exception("Rezervacija sa ID-jem " + id + " nije pronađena.");
+        if (r == null) throw new EntitetNijePronadjenException("Rezervacija", id);
         return r;
     }
 

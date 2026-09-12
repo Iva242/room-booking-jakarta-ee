@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.Sala;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
 
@@ -22,10 +23,10 @@ public class SalaRepository implements MyAppRepository<Sala, Long> {
     }
 
     @Override
-    public Sala findById(Long id) throws Exception {
+    public Sala findById(Long id) {
         Sala s = em.find(Sala.class, id);
         if (s == null) {
-            throw new Exception("Sala sa ID-jem " + id + " nije pronađena.");
+            throw new EntitetNijePronadjenException("Sala", id);
         }
         return s;
     }
