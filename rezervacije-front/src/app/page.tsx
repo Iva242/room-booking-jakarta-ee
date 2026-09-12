@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { api } from "@/lib/api";
+import { api, BASE_URL } from "@/lib/api";
 import SalaCard from "@/components/SalaCard";
 import Link from "next/link";
 import { Korisnik, Sala } from "@/lib/types";
@@ -152,12 +152,27 @@ export default function HomePage() {
             onClose={() => setSelectedSala(null)}
             onConfirm={async (podaci) => {
               try {
-                await api.createRezervacija(podaci);
-                alert("Rezervacija uspešno poslata!");
-                setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
-              } catch (err: any) {
+                const token = localStorage.getItem("token");
+                const res = await fetch(`${BASE_URL}/rezervacije`, {
+                  method: "POST",
+                  headers: {
+                    "Content-Type": "application/json",
+                    Authorization: `Bearer ${token}`,
+                  },
+                  body: JSON.stringify(podaci),
+                });
+
+                if (res.ok) {
+                  alert("Rezervacija uspešno poslata!");
+                  setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
+                } else {
+                  alert(
+                    "Greška pri rezervaciji. Proverite da li ste ulogovani.",
+                  );
+                }
+              } catch (err) {
                 console.error("Greška:", err);
-                alert(err?.message || "Došlo je do greške sa serverom.");
+                alert("Došlo je do greške sa serverom.");
               }
             }}
           />
