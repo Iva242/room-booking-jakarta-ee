@@ -65,7 +65,7 @@ public class RezervacijaRepository implements MyAppRepository<Rezervacija, Long>
     // ignorismemo otkazane i zavrsene jer one ne blokiraju salu
     String jpql = "SELECT COUNT(r) FROM Rezervacija r " +
                   "WHERE r.sala.idSale = :salaId " +
-                  "AND r.status NOT IN ('OTKAZANA', 'ZAVRSENA') " +
+                  "AND LOWER(r.status) NOT IN ('otkazana', 'zavrsena') " +
                   "AND r.pocetak < :kraj AND r.kraj > :pocetak";
 
     Long count = em.createQuery(jpql, Long.class)
