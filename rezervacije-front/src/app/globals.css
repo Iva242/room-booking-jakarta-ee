@@ -58,3 +58,7 @@ body {
   border-color: rgb(219 39 119); /* Još tamnija roze na hover (pink-600) */
   box-shadow: 0 15px 35px rgba(219, 39, 119, 0.2);
 }
+@keyframes toastUlaz {
+  from { opacity: 0; transform: translateX(1rem); }
+  to   { opacity: 1; transform: translateX(0); }
+}
