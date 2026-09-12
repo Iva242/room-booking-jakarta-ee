@@ -3,6 +3,7 @@
 import { useState, useEffect, use, useMemo } from "react";
 import { useParams, notFound } from "next/navigation";
 import { api, BASE_URL } from "@/lib/api";
+import { useObavestenja } from "@/components/Obavestenja";
 import { Sala } from "@/lib/types";
 import Link from "next/link";
 import Header from "@/components/Header";
@@ -24,6 +25,7 @@ interface PageProps {
 }
 
 export default function SalaDetalji({ params }: PageProps) {
+  const { uspeh, greska } = useObavestenja();
   const resolvedParams = use(params);
   const id = resolvedParams.id;
 
@@ -144,9 +146,9 @@ export default function SalaDetalji({ params }: PageProps) {
         const novaSala = await res.json();
         setSala(novaSala);
         setIsEditModalOpen(false);
-        alert("Sala uspešno ažurirana!");
+        uspeh("Sala je ažurirana.");
       } else {
-        alert("Greška pri izmeni.");
+        greska("Greška pri izmeni sale.");
       }
     } catch (err) {
       console.error(err);
@@ -388,16 +390,18 @@ export default function SalaDetalji({ params }: PageProps) {
               const responseText = await res.text();
 
               if (res.ok) {
-                alert("Rezervacija uspešno poslata!");
+                uspeh("Rezervacija je poslata.");
                 setIsRezervacijaModalOpen(false);
               } else {
                 // Ako nije OK, samo izbaci taj tekst kao alert
                 // Ovo pokriva "Sala je zauzeta..." i sve druge poruke koje backend pošalje
-                alert(responseText || "Došlo je do greške pri rezervaciji.");
+                greska(
+                  responseText || "Došlo je do greške pri rezervaciji.",
+                );
               }
             } catch (error) {
               console.error("Greška pri mreži:", error);
-              alert("Došlo je do problema sa konekcijom.");
+              greska("Došlo je do problema sa konekcijom.");
             }
           }}
         />

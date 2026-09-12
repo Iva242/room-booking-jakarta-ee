@@ -8,8 +8,10 @@ import { Korisnik, Sala } from "@/lib/types";
 import Header from "../components/Header";
 import RezervacijaModal from "@/components/RezervacijaModal";
 import DeleteSalaModal from "@/components/DeleteSalaModal";
+import { useObavestenja } from "@/components/Obavestenja";
 
 export default function HomePage() {
+  const { uspeh, greska } = useObavestenja();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [saleIzBaze, setSaleIzBaze] = useState<Sala[]>([]);
   const [loading, setLoading] = useState(true);
@@ -163,16 +165,17 @@ export default function HomePage() {
                 });
 
                 if (res.ok) {
-                  alert("Rezervacija uspešno poslata!");
+                  uspeh("Rezervacija je poslata.");
                   setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
                 } else {
-                  alert(
-                    "Greška pri rezervaciji. Proverite da li ste ulogovani.",
+                  greska(
+                    (await res.text()) ||
+                      "Greška pri rezervaciji. Proverite da li ste ulogovani.",
                   );
                 }
               } catch (err) {
                 console.error("Greška:", err);
-                alert("Došlo je do greške sa serverom.");
+                greska("Došlo je do greške sa serverom.");
               }
             }}
           />

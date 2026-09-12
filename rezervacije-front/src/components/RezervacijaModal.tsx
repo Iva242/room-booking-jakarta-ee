@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import DatePicker from "react-datepicker";
 import "react-datepicker/dist/react-datepicker.css";
 import { Sala, TipDogadjaja } from "@/lib/types";
+import { useObavestenja } from "@/components/Obavestenja";
 
 interface Props {
   sala: Sala;
@@ -18,6 +19,7 @@ export default function RezervacijaModal({
   onClose,
   onConfirm,
 }: Props) {
+  const { greska } = useObavestenja();
   const [startDate, setStartDate] = useState<Date | null>(new Date());
   const [endDate, setEndDate] = useState<Date | null>(
     new Date(new Date().getTime() + 60 * 60 * 1000),
@@ -72,18 +74,18 @@ export default function RezervacijaModal({
     // 1. Dobavi ulogovanog korisnika iz localStorage
     const userJson = localStorage.getItem("ulogovan_korisnik");
     if (!userJson) {
-      alert("Niste ulogovani, ne možete rezervisati.");
+      greska("Niste prijavljeni, pa ne možete rezervisati.");
       return;
     }
     const user = JSON.parse(userJson);
 
     // 2. Tvoje postojeće validacije
     if (!(startDate instanceof Date) || !(endDate instanceof Date)) {
-      alert("Molimo izaberite ispravne datume.");
+      greska("Izaberite ispravne datume.");
       return;
     }
     if (endDate <= startDate) {
-      alert("Kraj mora biti posle početka.");
+      greska("Kraj mora biti posle početka.");
       return;
     }
 
@@ -109,7 +111,7 @@ export default function RezervacijaModal({
 
       onConfirm(podaciZaSlanje);
     } catch (error) {
-      alert("Došlo je do greške pri formatiranju datuma.");
+      greska("Datumi nisu ispravno uneti.");
     }
   };
 

@@ -6,12 +6,14 @@ import RezervacijaCard from "@/components/RezervacijaCard";
 import Header from "@/components/Header";
 import { api } from "@/lib/api";
 import StatistikaChart from "@/components/StatistikaChart";
+import { useObavestenja } from "@/components/Obavestenja";
 
 export default function Home() {
   const [sveRezervacije, setSveRezervacije] = useState<Rezervacija[]>([]);
   const [loading, setLoading] = useState(true);
   const [filter, setFilter] = useState("sve");
   const [currentUser, setCurrentUser] = useState<Korisnik | null>(null);
+  const { uspeh, greska, potvrdi } = useObavestenja();
 
   useEffect(() => {
     const storedUserString = localStorage.getItem("ulogovan_korisnik");
@@ -45,8 +47,12 @@ export default function Home() {
   }, []);
 
   const handleOtkazi = async (id: number) => {
-    if (!confirm("Da li ste sigurni da želite da otkažete ovu rezervaciju?"))
-      return;
+    const prihvaceno = await potvrdi({
+      naslov: "Otkaži rezervaciju",
+      opis: "Ova radnja se ne može poništiti.",
+      tekstPotvrde: "Otkaži",
+    });
+    if (!prihvaceno) return;
 
     try {
       await api.otkaziRezervaciju(id);
@@ -56,9 +62,9 @@ export default function Home() {
           res.idRezervacije === id ? { ...res, status: "otkazana" } : res,
         ),
       );
-      alert("Rezervacija je uspešno otkazana.");
+      uspeh("Rezervacija je otkazana.");
     } catch (error: any) {
-      alert("Greška: " + error.message);
+      greska(error.message);
     }
   };
 
@@ -74,9 +80,9 @@ export default function Home() {
             : res,
         ),
       );
-      alert("Rezervacija je uspešno potvrđena.");
+      uspeh("Rezervacija je potvrđena.");
     } catch (error: any) {
-      alert("Greška: " + error.message);
+      greska(error.message);
     }
   };
 

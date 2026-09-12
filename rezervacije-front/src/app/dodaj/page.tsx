@@ -4,8 +4,10 @@ import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { api } from "@/lib/api";
 import { Karakteristika, TipDogadjaja } from "@/lib/types";
+import { useObavestenja } from "@/components/Obavestenja";
 
 export default function DodajSalu() {
+  const { uspeh, greska } = useObavestenja();
   const router = useRouter();
   const [podaci, setPodaci] = useState<{
     karakteristike: Karakteristika[];
@@ -72,11 +74,11 @@ export default function DodajSalu() {
 
     try {
       await api.createSala(payload);
-      alert("Uspešno dodato!");
+      uspeh("Sala je dodata.");
       router.push("/");
     } catch (err: any) {
       console.error("Greška pri slanju:", err);
-      alert("Došlo je do greške. Proveri konzolu.");
+      greska(err?.response?.data?.message || "Sala nije sačuvana. Pokušajte ponovo.");
     }
   };
 
