@@ -78,7 +78,7 @@ export default function DodajSalu() {
       router.push("/");
     } catch (err: any) {
       console.error("Greška pri slanju:", err);
-      greska(err?.response?.data?.message || "Sala nije sačuvana. Pokušajte ponovo.");
+      greska(err?.message || "Sala nije sačuvana. Pokušajte ponovo.");
     }
   };
 

@@ -2,7 +2,7 @@
 
 import { useState, useEffect, use, useMemo } from "react";
 import { useParams, notFound } from "next/navigation";
-import { api, BASE_URL } from "@/lib/api";
+import { api, BASE_URL, procitajGresku } from "@/lib/api";
 import { useObavestenja } from "@/components/Obavestenja";
 import { Sala } from "@/lib/types";
 import Link from "next/link";
@@ -148,7 +148,7 @@ export default function SalaDetalji({ params }: PageProps) {
         setIsEditModalOpen(false);
         uspeh("Sala je ažurirana.");
       } else {
-        greska("Greška pri izmeni sale.");
+        greska(await procitajGresku(res));
       }
     } catch (err) {
       console.error(err);
@@ -386,18 +386,11 @@ export default function SalaDetalji({ params }: PageProps) {
                 body: JSON.stringify(podaci),
               });
 
-              // Uvek čitamo tekstualni odgovor, jer backend vraća poruku greške kao string
-              const responseText = await res.text();
-
               if (res.ok) {
                 uspeh("Rezervacija je poslata.");
                 setIsRezervacijaModalOpen(false);
               } else {
-                // Ako nije OK, samo izbaci taj tekst kao alert
-                // Ovo pokriva "Sala je zauzeta..." i sve druge poruke koje backend pošalje
-                greska(
-                  responseText || "Došlo je do greške pri rezervaciji.",
-                );
+                greska(await procitajGresku(res));
               }
             } catch (error) {
               console.error("Greška pri mreži:", error);

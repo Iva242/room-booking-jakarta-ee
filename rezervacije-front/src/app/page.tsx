@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useMemo } from "react";
-import { api, BASE_URL } from "@/lib/api";
+import { api, BASE_URL, procitajGresku } from "@/lib/api";
 import SalaCard from "@/components/SalaCard";
 import Link from "next/link";
 import { Korisnik, Sala } from "@/lib/types";
@@ -168,10 +168,7 @@ export default function HomePage() {
                   uspeh("Rezervacija je poslata.");
                   setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
                 } else {
-                  greska(
-                    (await res.text()) ||
-                      "Greška pri rezervaciji. Proverite da li ste ulogovani.",
-                  );
+                  greska(await procitajGresku(res));
                 }
               } catch (err) {
                 console.error("Greška:", err);

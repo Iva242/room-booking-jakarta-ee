@@ -14,18 +14,24 @@ const getHeaders = (isAuth = true) => {
   return headers;
 };
 
+// Backend greske vraca kao { status, poruka, putanja, vreme }.
+// Izuzetak je /api/auth/verify, koji i dalje salje obican tekst jer ga
+// korisnik otvara u pregledacu.
+export const procitajGresku = async (res: Response): Promise<string> => {
+  const tekst = await res.text();
+  if (!tekst) return `Greška ${res.status}`;
+  try {
+    const podaci = JSON.parse(tekst);
+    return podaci?.poruka || tekst;
+  } catch {
+    return tekst;
+  }
+};
+
 // Dodajemo pomoćnu funkciju da ne pišemo isti kod za greške 10 puta
 const handleResponse = async (res: Response) => {
-  if (!res.ok) {
-    let errorData;
-    try {
-      const text = await res.text();
-      errorData = text ? JSON.parse(text) : { message: "Greška na serveru" };
-    } catch (e) {
-      errorData = { message: "Greška pri obradi odgovora" };
-    }
-    throw { response: { status: res.status, data: errorData } };
-  }
+  if (!res.ok) throw new Error(await procitajGresku(res));
+  if (res.status === 204) return null;
   return res.json();
 };
 
@@ -50,10 +56,7 @@ export const api = {
       headers: getHeaders(false),
       body: JSON.stringify(podaci),
     });
-    if (!res.ok) {
-      const err = await res.text();
-      throw new Error(err || "Greška pri registraciji");
-    }
+    if (!res.ok) throw new Error(await procitajGresku(res));
     return res.json();
   },
 
@@ -83,13 +86,7 @@ export const api = {
       headers: getHeaders(true),
     });
 
-    if (!res.ok) {
-      // Pokušaj da pročitaš poruku koju je backend poslao
-      const errorMessage = await res.text();
-      // Ako je stigla poruka (npr. "Ne možeš obrisati salu..."), baci je,
-      // inače koristi generičku
-      throw new Error(errorMessage || "Nije moguće obrisati salu");
-    }
+    if (!res.ok) throw new Error(await procitajGresku(res));
     return { success: true };
   },
 
@@ -100,7 +97,7 @@ export const api = {
     });
 
     if (!res.ok) {
-      throw new Error("Nije moguće dohvatiti salu");
+      throw new Error(await procitajGresku(res));
     }
 
     return res.json();
@@ -125,7 +122,7 @@ export const api = {
       headers: getHeaders(true),
       body: JSON.stringify(podaci),
     });
-    if (!res.ok) throw new Error(await res.text());
+    if (!res.ok) throw new Error(await procitajGresku(res));
     return res.json();
   },
 
@@ -156,8 +153,8 @@ export const api = {
       method: "DELETE",
       headers: getHeaders(true),
     });
-    if (!res.ok) throw new Error("Greška pri otkazivanju");
-    return { success: true }; // Spring vraća tekst, ne JSON, pa vraćamo uspeh
+    if (!res.ok) throw new Error(await procitajGresku(res));
+    return { success: true };
   },
 
   potvrdiRezervaciju: async (idRezervacije: number) => {
@@ -170,10 +167,7 @@ export const api = {
     );
 
     // Ako backend vrati grešku (status 400 ili 500), bacaš izuzetak
-    if (!res.ok) {
-      const errorText = await res.text(); // Često je korisno pročitati poruku greške
-      throw new Error(errorText || "Greška pri potvrdi");
-    }
+    if (!res.ok) throw new Error(await procitajGresku(res));
 
     // Pošto vraćaš običan String, ne treba ti res.json().
     // Samo vrati uspeh da znaš da je sve prošlo.
