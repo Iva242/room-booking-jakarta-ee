@@ -55,7 +55,8 @@ public class SecurityConfig {
                 .requestMatchers(HttpMethod.DELETE, "/api/sale/**").hasRole("ADMIN")
                 .requestMatchers(HttpMethod.GET, "/api/rezervacije").hasRole("ADMIN") // Pregled svih
                 .requestMatchers(HttpMethod.PUT, "/api/rezervacije/potvrdi/**").hasRole("ADMIN") // Potvrda
-                .requestMatchers("/api/korisnici/pretraga").hasRole("ADMIN")
+
+                .requestMatchers("/api/korisnici/**").hasRole("ADMIN")
                         
                 // 3. KLIJENTSKE RUTE
                 .requestMatchers("/api/rezervacije/moje").hasRole("KORISNIK")
