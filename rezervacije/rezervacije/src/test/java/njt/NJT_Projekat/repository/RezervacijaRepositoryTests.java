@@ -3,6 +3,7 @@ package njt.NJT_Projekat.repository;
 import java.time.LocalDateTime;
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.entity.impl.Sala;
 import njt.NJT_Projekat.entity.impl.TipDogadjaja;
@@ -64,7 +65,7 @@ public class RezervacijaRepositoryTests {
         tipDogadjajaRepository.save(tipDogadjaja);
     }
 
-    private Rezervacija sacuvajRezervaciju(LocalDateTime pocetak, LocalDateTime kraj, String status) {
+    private Rezervacija sacuvajRezervaciju(LocalDateTime pocetak, LocalDateTime kraj, StatusRezervacije status) {
         Rezervacija rezervacija = new Rezervacija();
         rezervacija.setPocetak(pocetak);
         rezervacija.setKraj(kraj);
@@ -77,14 +78,14 @@ public class RezervacijaRepositoryTests {
 
     @Test
     public void saveTest() {
-        Rezervacija rezervacija = sacuvajRezervaciju(POCETAK, KRAJ, "na_cekanju");
+        Rezervacija rezervacija = sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.NA_CEKANJU);
         assertNotNull(rezervacija);
         assertNotNull(rezervacija.getIdRezervacije());
     }
 
     @Test
     public void findBySalaIdTest() {
-        sacuvajRezervaciju(POCETAK, KRAJ, "na_cekanju");
+        sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.NA_CEKANJU);
         List<Rezervacija> rezervacije = rezervacijaRepository.findBySalaId(sala.getIdSale());
         Assertions.assertEquals(1, rezervacije.size());
         Assertions.assertEquals(sala.getIdSale(), rezervacije.get(0).getSala().getIdSale());
@@ -92,7 +93,7 @@ public class RezervacijaRepositoryTests {
 
     @Test
     public void findByKorisnikIdKorisnikaTest() {
-        sacuvajRezervaciju(POCETAK, KRAJ, "na_cekanju");
+        sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.NA_CEKANJU);
         List<Rezervacija> rezervacije =
                 rezervacijaRepository.findByKorisnikIdKorisnika(korisnik.getIdKorisnika());
         Assertions.assertEquals(1, rezervacije.size());
@@ -100,7 +101,7 @@ public class RezervacijaRepositoryTests {
 
     @Test
     public void existsOverlappingPreklapanjeTest() {
-        sacuvajRezervaciju(POCETAK, KRAJ, "potvrdjena");
+        sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.POTVRDJENA);
         // trazeni termin pocinje u 11, dok prethodna rezervacija traje do 12
         boolean preklapa = rezervacijaRepository.existsOverlapping(
                 sala.getIdSale(),
@@ -111,7 +112,7 @@ public class RezervacijaRepositoryTests {
 
     @Test
     public void existsOverlappingSlobodanTerminTest() {
-        sacuvajRezervaciju(POCETAK, KRAJ, "potvrdjena");
+        sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.POTVRDJENA);
         // trazeni termin pocinje tacno kada prethodni zavrsava
         boolean preklapa = rezervacijaRepository.existsOverlapping(
                 sala.getIdSale(),
@@ -122,7 +123,7 @@ public class RezervacijaRepositoryTests {
 
     @Test
     public void existsOverlappingOtkazanaNeBlokiraTest() {
-        sacuvajRezervaciju(POCETAK, KRAJ, "otkazana");
+        sacuvajRezervaciju(POCETAK, KRAJ, StatusRezervacije.OTKAZANA);
         // otkazana rezervacija ne sme da drzi salu zauzetom
         boolean preklapa = rezervacijaRepository.existsOverlapping(
                 sala.getIdSale(), POCETAK, KRAJ);

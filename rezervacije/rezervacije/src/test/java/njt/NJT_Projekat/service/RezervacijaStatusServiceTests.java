@@ -3,6 +3,7 @@ package njt.NJT_Projekat.service;
 import java.time.LocalDateTime;
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.repository.impl.RezervacijaRepository;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
@@ -20,7 +21,7 @@ public class RezervacijaStatusServiceTests {
     @MockitoBean
     private RezervacijaRepository rezervacijaRepository;
 
-    private Rezervacija rezervacija(LocalDateTime pocetak, LocalDateTime kraj, String status) {
+    private Rezervacija rezervacija(LocalDateTime pocetak, LocalDateTime kraj, StatusRezervacije status) {
         Rezervacija r = new Rezervacija();
         r.setIdRezervacije(1L);
         r.setPocetak(pocetak);
@@ -35,12 +36,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusMinutes(30),
                 LocalDateTime.now().plusMinutes(30),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
         //Act
         rezervacijaStatusService.azurirajStatuseRezervacija();
         //Assert
-        Assertions.assertEquals("u_toku", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.U_TOKU, r.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.times(1)).save(r);
     }
 
@@ -49,12 +50,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusHours(3),
                 LocalDateTime.now().minusHours(1),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("zavrsena", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.ZAVRSENA, r.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.times(1)).save(r);
     }
 
@@ -63,12 +64,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusHours(3),
                 LocalDateTime.now().minusHours(1),
-                "u_toku");
+                StatusRezervacije.U_TOKU);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("zavrsena", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.ZAVRSENA, r.getStatus());
     }
 
     @Test
@@ -76,12 +77,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().plusDays(1),
                 LocalDateTime.now().plusDays(1).plusHours(2),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("potvrdjena", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.POTVRDJENA, r.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.never()).save(Mockito.any(Rezervacija.class));
     }
 
@@ -91,12 +92,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusHours(3),
                 LocalDateTime.now().minusHours(1),
-                "otkazana");
+                StatusRezervacije.OTKAZANA);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("otkazana", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.OTKAZANA, r.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.never()).save(Mockito.any(Rezervacija.class));
     }
 
@@ -105,7 +106,7 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusHours(3),
                 LocalDateTime.now().minusHours(1),
-                "zavrsena");
+                StatusRezervacije.ZAVRSENA);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
@@ -119,12 +120,12 @@ public class RezervacijaStatusServiceTests {
         Rezervacija r = rezervacija(
                 LocalDateTime.now().minusMinutes(30),
                 LocalDateTime.now().plusMinutes(30),
-                "na_cekanju");
+                StatusRezervacije.NA_CEKANJU);
         Mockito.when(rezervacijaRepository.findAll()).thenReturn(List.of(r));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("na_cekanju", r.getStatus());
+        Assertions.assertEquals(StatusRezervacije.NA_CEKANJU, r.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.never()).save(Mockito.any(Rezervacija.class));
     }
 
@@ -133,23 +134,23 @@ public class RezervacijaStatusServiceTests {
         Rezervacija utoku = rezervacija(
                 LocalDateTime.now().minusMinutes(30),
                 LocalDateTime.now().plusMinutes(30),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Rezervacija zavrsena = rezervacija(
                 LocalDateTime.now().minusHours(3),
                 LocalDateTime.now().minusHours(1),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Rezervacija buduca = rezervacija(
                 LocalDateTime.now().plusDays(2),
                 LocalDateTime.now().plusDays(2).plusHours(1),
-                "potvrdjena");
+                StatusRezervacije.POTVRDJENA);
         Mockito.when(rezervacijaRepository.findAll())
                 .thenReturn(List.of(utoku, zavrsena, buduca));
 
         rezervacijaStatusService.azurirajStatuseRezervacija();
 
-        Assertions.assertEquals("u_toku", utoku.getStatus());
-        Assertions.assertEquals("zavrsena", zavrsena.getStatus());
-        Assertions.assertEquals("potvrdjena", buduca.getStatus());
+        Assertions.assertEquals(StatusRezervacije.U_TOKU, utoku.getStatus());
+        Assertions.assertEquals(StatusRezervacije.ZAVRSENA, zavrsena.getStatus());
+        Assertions.assertEquals(StatusRezervacije.POTVRDJENA, buduca.getStatus());
         Mockito.verify(rezervacijaRepository, Mockito.times(2)).save(Mockito.any(Rezervacija.class));
     }
 }

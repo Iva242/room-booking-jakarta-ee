@@ -3,6 +3,7 @@ package njt.NJT_Projekat.dto.impl;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import java.time.LocalDateTime;
 import njt.NJT_Projekat.dto.Dto;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 
 public class RezervacijaDto implements Dto{
 
@@ -11,7 +12,7 @@ public class RezervacijaDto implements Dto{
     private LocalDateTime pocetak;
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime kraj;
-    private String status;
+    private StatusRezervacije status;
     private Long idSale;
     private TipDogadjajaDto tipDogadjaja;
     private KorisnikDto korisnik;
@@ -19,7 +20,7 @@ public class RezervacijaDto implements Dto{
     public RezervacijaDto() {
     }
 
-    public RezervacijaDto(Long idRezervacije, LocalDateTime pocetak, LocalDateTime kraj, String status, Long idSale, TipDogadjajaDto tipDogadjaja, KorisnikDto korisnik) {
+    public RezervacijaDto(Long idRezervacije, LocalDateTime pocetak, LocalDateTime kraj, StatusRezervacije status, Long idSale, TipDogadjajaDto tipDogadjaja, KorisnikDto korisnik) {
         this.idRezervacije = idRezervacije;
         this.pocetak = pocetak;
         this.kraj = kraj;
@@ -54,11 +55,11 @@ public class RezervacijaDto implements Dto{
         this.kraj = kraj;
     }
 
-    public String getStatus() {
+    public StatusRezervacije getStatus() {
         return status;
     }
 
-    public void setStatus(String status) {
+    public void setStatus(StatusRezervacije status) {
         this.status = status;
     }
 

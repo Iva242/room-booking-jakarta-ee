@@ -5,6 +5,7 @@ import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.time.LocalDateTime;
 import java.util.List;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.repository.MyAppRepository;
 import org.springframework.stereotype.Repository;
@@ -65,11 +66,13 @@ public class RezervacijaRepository implements MyAppRepository<Rezervacija, Long>
     // ignorismemo otkazane i zavrsene jer one ne blokiraju salu
     String jpql = "SELECT COUNT(r) FROM Rezervacija r " +
                   "WHERE r.sala.idSale = :salaId " +
-                  "AND LOWER(r.status) NOT IN ('otkazana', 'zavrsena') " +
+                  "AND r.status NOT IN :neblokirajuci " +
                   "AND r.pocetak < :kraj AND r.kraj > :pocetak";
 
     Long count = em.createQuery(jpql, Long.class)
             .setParameter("salaId", salaId)
+            .setParameter("neblokirajuci",
+                    List.of(StatusRezervacije.OTKAZANA, StatusRezervacije.ZAVRSENA))
             .setParameter("pocetak", pocetak)
             .setParameter("kraj", kraj)
             .getSingleResult();

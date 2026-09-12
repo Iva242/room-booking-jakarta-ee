@@ -7,6 +7,7 @@ import njt.NJT_Projekat.config.SecurityConfig;
 import njt.NJT_Projekat.dto.impl.KorisnikDto;
 import njt.NJT_Projekat.dto.impl.RezervacijaDto;
 import njt.NJT_Projekat.dto.impl.TipDogadjajaDto;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.security.AppUserDetailsService;
 import njt.NJT_Projekat.security.JwtService;
 import njt.NJT_Projekat.service.RezervacijaService;
@@ -69,7 +70,7 @@ public class RezervacijaControllerTests {
         dto.setTipDogadjaja(tipDto);
         dto.setPocetak(POCETAK);
         dto.setKraj(KRAJ);
-        dto.setStatus("na_cekanju");
+        dto.setStatus(StatusRezervacije.NA_CEKANJU);
         return dto;
     }
 

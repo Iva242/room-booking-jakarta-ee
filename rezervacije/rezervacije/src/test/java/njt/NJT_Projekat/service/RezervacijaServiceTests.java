@@ -6,6 +6,7 @@ import njt.NJT_Projekat.dto.impl.KorisnikDto;
 import njt.NJT_Projekat.dto.impl.RezervacijaDto;
 import njt.NJT_Projekat.dto.impl.TipDogadjajaDto;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.entity.impl.Sala;
 import njt.NJT_Projekat.entity.impl.TipDogadjaja;
@@ -87,7 +88,7 @@ public class RezervacijaServiceTests {
         return dto;
     }
 
-    private Rezervacija napraviRezervaciju(String status, Korisnik vlasnik) {
+    private Rezervacija napraviRezervaciju(StatusRezervacije status, Korisnik vlasnik) {
         Rezervacija rezervacija = new Rezervacija();
         rezervacija.setIdRezervacije(10L);
         rezervacija.setPocetak(POCETAK);
@@ -112,7 +113,7 @@ public class RezervacijaServiceTests {
         //Assert
         assertNotNull(sacuvana);
         Assertions.assertEquals(ID_SALE, sacuvana.getIdSale());
-        Assertions.assertEquals("na_cekanju", sacuvana.getStatus());
+        Assertions.assertEquals(StatusRezervacije.NA_CEKANJU, sacuvana.getStatus());
     }
 
     @Test
@@ -153,7 +154,7 @@ public class RezervacijaServiceTests {
 
     @Test
     public void otkaziRezervacijuTest() throws Exception {
-        Rezervacija rezervacija = napraviRezervaciju("potvrdjena", korisnik);
+        Rezervacija rezervacija = napraviRezervaciju(StatusRezervacije.POTVRDJENA, korisnik);
         Mockito.when(rezervacijaRepository.findById(10L)).thenReturn(rezervacija);
         Mockito.when(korisnikRepository.findByKorisnickoIme("ana"))
                 .thenReturn(Optional.of(korisnik));
@@ -162,7 +163,7 @@ public class RezervacijaServiceTests {
 
         ArgumentCaptor<Rezervacija> uhvacena = ArgumentCaptor.forClass(Rezervacija.class);
         Mockito.verify(rezervacijaRepository, Mockito.times(1)).save(uhvacena.capture());
-        Assertions.assertEquals("otkazana", uhvacena.getValue().getStatus());
+        Assertions.assertEquals(StatusRezervacije.OTKAZANA, uhvacena.getValue().getStatus());
     }
 
     @Test
@@ -172,7 +173,7 @@ public class RezervacijaServiceTests {
         drugi.setKorisnickoIme("nikola");
         drugi.setUloga("ROLE_KORISNIK");
 
-        Rezervacija rezervacija = napraviRezervaciju("potvrdjena", korisnik);
+        Rezervacija rezervacija = napraviRezervaciju(StatusRezervacije.POTVRDJENA, korisnik);
         Mockito.when(rezervacijaRepository.findById(10L)).thenReturn(rezervacija);
         Mockito.when(korisnikRepository.findByKorisnickoIme("nikola"))
                 .thenReturn(Optional.of(drugi));
@@ -190,7 +191,7 @@ public class RezervacijaServiceTests {
         admin.setKorisnickoIme("iva");
         admin.setUloga("ROLE_ADMIN");
 
-        Rezervacija rezervacija = napraviRezervaciju("potvrdjena", korisnik);
+        Rezervacija rezervacija = napraviRezervaciju(StatusRezervacije.POTVRDJENA, korisnik);
         Mockito.when(rezervacijaRepository.findById(10L)).thenReturn(rezervacija);
         Mockito.when(korisnikRepository.findByKorisnickoIme("iva"))
                 .thenReturn(Optional.of(admin));
@@ -198,18 +199,18 @@ public class RezervacijaServiceTests {
         rezervacijaService.otkaziRezervaciju(10L, "iva");
 
         Mockito.verify(rezervacijaRepository, Mockito.times(1)).save(Mockito.any(Rezervacija.class));
-        Assertions.assertEquals("otkazana", rezervacija.getStatus());
+        Assertions.assertEquals(StatusRezervacije.OTKAZANA, rezervacija.getStatus());
     }
 
     @Test
     public void potvrdiRezervacijuTest() throws Exception {
-        Rezervacija rezervacija = napraviRezervaciju("na_cekanju", korisnik);
+        Rezervacija rezervacija = napraviRezervaciju(StatusRezervacije.NA_CEKANJU, korisnik);
         Mockito.when(rezervacijaRepository.findById(10L)).thenReturn(rezervacija);
 
         rezervacijaService.potvrdiRezervaciju(10L);
 
         ArgumentCaptor<Rezervacija> uhvacena = ArgumentCaptor.forClass(Rezervacija.class);
         Mockito.verify(rezervacijaRepository, Mockito.times(1)).save(uhvacena.capture());
-        Assertions.assertEquals("potvrdjena", uhvacena.getValue().getStatus());
+        Assertions.assertEquals(StatusRezervacije.POTVRDJENA, uhvacena.getValue().getStatus());
     }
 }

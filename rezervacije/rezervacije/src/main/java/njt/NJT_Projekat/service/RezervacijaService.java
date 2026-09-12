@@ -6,6 +6,7 @@ import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.entity.impl.Sala;
 import njt.NJT_Projekat.entity.impl.TipDogadjaja;
 import njt.NJT_Projekat.entity.impl.Korisnik;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.repository.impl.RezervacijaRepository;
 import njt.NJT_Projekat.repository.impl.SalaRepository;
 import njt.NJT_Projekat.repository.impl.TipDogadjajaRepository;
@@ -71,7 +72,7 @@ public class RezervacijaService {
         Rezervacija rez = new Rezervacija();
         rez.setPocetak(dto.getPocetak());
         rez.setKraj(dto.getKraj());
-        rez.setStatus(dto.getStatus() != null ? dto.getStatus() : "na_cekanju");
+        rez.setStatus(dto.getStatus() != null ? dto.getStatus() : StatusRezervacije.NA_CEKANJU);
 
         // vezivanje entiteta koji smo nasli iz baze
         rez.setSala(sala);
@@ -129,7 +130,7 @@ public class RezervacijaService {
             throw new Exception("Nemate dozvolu da otkažete tuđu rezervaciju!");
         }
 
-        rezervacija.setStatus("otkazana");
+        rezervacija.setStatus(StatusRezervacije.OTKAZANA);
         rezervacijaRepository.save(rezervacija);
     }
 
@@ -141,7 +142,7 @@ public class RezervacijaService {
             throw new Exception("Rezervacija sa ID-jem " + id + " nije pronađena.");
         }
 
-        rezervacija.setStatus("potvrdjena");
+        rezervacija.setStatus(StatusRezervacije.POTVRDJENA);
 
         rezervacijaRepository.save(rezervacija);
     }

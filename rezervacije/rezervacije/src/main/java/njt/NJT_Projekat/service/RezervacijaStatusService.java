@@ -2,6 +2,7 @@ package njt.NJT_Projekat.service;
 
 import jakarta.transaction.Transactional;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
@@ -26,20 +27,20 @@ public class RezervacijaStatusService {
 
         for (Rezervacija r : rezervacije) {
             // Ako je već ZAVRSENA ili OTKAZANA, preskoci
-            if ("zavrsena".equals(r.getStatus()) || "otkazana".equals(r.getStatus())) {
+            if (r.getStatus() == StatusRezervacije.ZAVRSENA || r.getStatus() == StatusRezervacije.OTKAZANA) {
                 continue;
             }
 
             // Logika: U TOKU
             if (sada.isAfter(r.getPocetak()) && sada.isBefore(r.getKraj())) {
-                if ("potvrdjena".equals(r.getStatus())) {
-                    r.setStatus("u_toku");
+                if (r.getStatus() == StatusRezervacije.POTVRDJENA) {
+                    r.setStatus(StatusRezervacije.U_TOKU);
                     rezervacijaRepository.save(r);
                 }
             }
             // Logika: ZAVRSENA
             else if (sada.isAfter(r.getKraj())) {
-                r.setStatus("zavrsena");
+                r.setStatus(StatusRezervacije.ZAVRSENA);
                 rezervacijaRepository.save(r);
             }
         }

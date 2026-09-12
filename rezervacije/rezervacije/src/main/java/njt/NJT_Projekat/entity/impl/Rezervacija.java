@@ -3,6 +3,7 @@ package njt.NJT_Projekat.entity.impl;
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import jakarta.persistence.Convert;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -16,6 +17,8 @@ import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 import njt.NJT_Projekat.entity.MyEntity;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
+import njt.NJT_Projekat.entity.enums.StatusRezervacijeConverter;
 
 @Entity
 @Table(name = "rezervacija")
@@ -33,7 +36,8 @@ public class Rezervacija extends MyEntity {
 
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime kraj;
-    private String status;
+    @Convert(converter = StatusRezervacijeConverter.class)
+    private StatusRezervacije status;
 
     // veze sa ostalim tabelama (FK)
     // rezervacija se odnosi na jednu i samo jednu salu

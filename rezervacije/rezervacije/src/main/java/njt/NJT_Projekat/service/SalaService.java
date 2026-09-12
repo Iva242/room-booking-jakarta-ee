@@ -13,6 +13,7 @@ import njt.NJT_Projekat.entity.impl.TipDogadjaja;
 import java.util.List;
 import java.util.stream.Collectors;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
+import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.mapper.impl.KarakteristikaMapper;
 import njt.NJT_Projekat.mapper.impl.TipDogadjajaMapper;
 import njt.NJT_Projekat.repository.impl.KarakteristikaRepository;
@@ -165,7 +166,7 @@ public class SalaService {
         // provera rezervacije
         List<Rezervacija> rezervacije = rezervacijaRepository.findBySalaId(id);
         for (Rezervacija r : rezervacije) {
-            if (!"zavrsena".equals(r.getStatus()) && !"otkazana".equals(r.getStatus())) {
+            if (r.getStatus() != StatusRezervacije.ZAVRSENA && r.getStatus() != StatusRezervacije.OTKAZANA) {
                 throw new Exception("Ne možeš obrisati salu jer postoje aktivne rezervacije!");
             }
         }
