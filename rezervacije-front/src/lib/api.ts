@@ -206,6 +206,14 @@ export const api = {
     return res.json();
   },
 
+  pretraziKorisnike: async (term: string) => {
+    const res = await fetch(
+      `${BASE_URL}/korisnici/pretraga?term=${encodeURIComponent(term)}`,
+      { headers: getHeaders(true) },
+    );
+    return handleResponse(res);
+  },
+
   // Dodaj ovo u api objekat u api.ts
   pretraziSale: async (term: string) => {
     const res = await fetch(

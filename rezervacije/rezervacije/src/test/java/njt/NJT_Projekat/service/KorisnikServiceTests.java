@@ -206,6 +206,40 @@ public class KorisnikServiceTests {
     }
 
     @Test
+    public void pretraziKlijenteTest() {
+        Mockito.when(korisnikRepository.pretraziPoUlozi("ana", "ROLE_KORISNIK"))
+                .thenReturn(List.of(postojeciKorisnik(true)));
+
+        List<KorisnikDto> rezultat = korisnikService.pretraziKlijente("ana");
+
+        Assertions.assertEquals(1, rezultat.size());
+        Assertions.assertEquals("ana1234", rezultat.get(0).getKorisnickoIme());
+    }
+
+    @Test
+    public void pretraziKlijenteUklanjaPraznaMestaTest() {
+        Mockito.when(korisnikRepository.pretraziPoUlozi("ana", "ROLE_KORISNIK"))
+                .thenReturn(List.of(postojeciKorisnik(true)));
+
+        korisnikService.pretraziKlijente("  ana  ");
+
+        Mockito.verify(korisnikRepository, Mockito.times(1))
+                .pretraziPoUlozi("ana", "ROLE_KORISNIK");
+    }
+
+    @Test
+    public void pretragaPraznimTekstomVracaCeluListuTest() {
+        Mockito.when(korisnikRepository.findByUloga("ROLE_KORISNIK"))
+                .thenReturn(List.of(postojeciKorisnik(true)));
+
+        List<KorisnikDto> rezultat = korisnikService.pretraziKlijente("   ");
+
+        Assertions.assertEquals(1, rezultat.size());
+        Mockito.verify(korisnikRepository, Mockito.never())
+                .pretraziPoUlozi(Mockito.anyString(), Mockito.anyString());
+    }
+
+    @Test
     public void korisniciVracaSamoObicneKorisnikeTest() {
         Mockito.when(korisnikRepository.findByUloga("ROLE_KORISNIK"))
                 .thenReturn(List.of(postojeciKorisnik(true)));

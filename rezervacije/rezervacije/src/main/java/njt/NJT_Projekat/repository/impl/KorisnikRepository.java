@@ -64,6 +64,18 @@ public class KorisnikRepository implements MyAppRepository<Korisnik, Long> {
                 .getResultList();
     }
 
+    // pretraga po imenu, prezimenu i korisnickom imenu, ograniceno na jednu ulogu
+    public List<Korisnik> pretraziPoUlozi(String tekst, String uloga) {
+        String jpql = "SELECT k FROM Korisnik k WHERE k.uloga = :uloga AND ("
+                + "LOWER(k.ime) LIKE :tekst OR "
+                + "LOWER(k.prezime) LIKE :tekst OR "
+                + "LOWER(k.korisnickoIme) LIKE :tekst)";
+        return em.createQuery(jpql, Korisnik.class)
+                .setParameter("uloga", uloga)
+                .setParameter("tekst", "%" + tekst.toLowerCase() + "%")
+                .getResultList();
+    }
+
     
     public List<Korisnik> findByUloga(String uloga) {
     return em.createQuery("SELECT k FROM Korisnik k WHERE k.uloga = :uloga", Korisnik.class)

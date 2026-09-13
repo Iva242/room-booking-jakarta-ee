@@ -23,6 +23,8 @@ import java.util.stream.Collectors;
 @Service
 public class KorisnikService {
 
+    private static final String ULOGA_KORISNIK = "ROLE_KORISNIK";
+
     private final KorisnikRepository korisnikRepository;
     private final KorisnikMapper korisnikMapper;
     private final KorisnikVerificationTokenRepository tokenRepository;
@@ -48,7 +50,7 @@ public class KorisnikService {
         }
 
         if (korisnik.getUloga() == null || korisnik.getUloga().isEmpty()) {
-            korisnik.setUloga("ROLE_KORISNIK");
+            korisnik.setUloga(ULOGA_KORISNIK);
         }
 
         korisnik.setLozinka(passwordEncoder.encode(korisnik.getLozinka()));
@@ -111,15 +113,19 @@ public class KorisnikService {
         return korisnikMapper.toDto(korisnik);
     }
 
+    // prazna pretraga vraca istu listu koju daje i korisnici(), pa se prikaz
+    // ponasa isto kao pre unosa teksta
     public List<KorisnikDto> pretraziKlijente(String tekst) {
-        return korisnikRepository.findByImeContainingIgnoreCaseOrPrezimeContainingIgnoreCase(tekst, tekst)
-                .stream()
+        if (tekst == null || tekst.isBlank()) {
+            return korisnici();
+        }
+        return korisnikRepository.pretraziPoUlozi(tekst.trim(), ULOGA_KORISNIK).stream()
                 .map(korisnikMapper::toDto)
                 .collect(Collectors.toList());
     }
 
     public List<KorisnikDto> korisnici() {
-        return korisnikRepository.findByUloga("ROLE_KORISNIK").stream()
+        return korisnikRepository.findByUloga(ULOGA_KORISNIK).stream()
                 .map(korisnikMapper::toDto)
                 .collect(Collectors.toList());
     }

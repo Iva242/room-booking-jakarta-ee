@@ -106,6 +106,39 @@ public class KorisnikRepositoryTests {
     }
 
     @Test
+    public void pretragaPoUloziNalaziPoKorisnickomImenuTest() {
+        List<Korisnik> rezultat = korisnikRepository.pretraziPoUlozi("nikola_test", "ROLE_KORISNIK");
+
+        Assertions.assertEquals(1, rezultat.size());
+        Assertions.assertEquals("Nikola", rezultat.get(0).getIme());
+    }
+
+    @Test
+    public void pretragaPoUloziNalaziPoImenuIPrezimenuTest() {
+        Assertions.assertEquals(1,
+                korisnikRepository.pretraziPoUlozi("nikola", "ROLE_KORISNIK").size());
+        // prezime Peric ima samo Ana, jer je Iva administrator
+        Assertions.assertEquals(1,
+                korisnikRepository.pretraziPoUlozi("peric", "ROLE_KORISNIK").size());
+    }
+
+    @Test
+    public void pretragaPoUloziNeVracaAdministratoreTest() {
+        List<Korisnik> rezultat = korisnikRepository.pretraziPoUlozi("iva", "ROLE_KORISNIK");
+
+        Assertions.assertTrue(rezultat.isEmpty());
+    }
+
+    @Test
+    public void pretragaPoUloziNeRazlikujeVelicinuSlovaTest() {
+        int malim = korisnikRepository.pretraziPoUlozi("nikola", "ROLE_KORISNIK").size();
+        int velikim = korisnikRepository.pretraziPoUlozi("NIKOLA", "ROLE_KORISNIK").size();
+
+        Assertions.assertEquals(1, malim);
+        Assertions.assertEquals(malim, velikim);
+    }
+
+    @Test
     public void deleteByIdTest() {
         Korisnik korisnik = sacuvajKorisnika("Za", "Brisanje", "brisanje_test", "ROLE_KORISNIK");
         Long id = korisnik.getIdKorisnika();
