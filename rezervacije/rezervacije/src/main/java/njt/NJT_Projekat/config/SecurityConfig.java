@@ -63,6 +63,9 @@ public class SecurityConfig {
                 .requestMatchers("/api/rezervacije/moje").hasRole("KORISNIK")
                 .requestMatchers(HttpMethod.POST, "/api/rezervacije/**").hasRole("KORISNIK")
                 .requestMatchers(HttpMethod.DELETE, "/api/rezervacije/**").hasAnyRole("KORISNIK", "ADMIN")
+
+                // ko sta sme unutar razgovora proverava PorukaService
+                .requestMatchers("/api/poruke/**").hasAnyRole("KORISNIK", "ADMIN")
                         
                         
                 // 4. SVE OSTALE RUTE
