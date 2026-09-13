@@ -67,7 +67,7 @@ public class RezervacijaServiceTests {
         tipDogadjaja.setIdTipDogadjaja(ID_TIPA);
         tipDogadjaja.setNaziv("Sastanak");
 
-        Mockito.when(salaRepository.findById(ID_SALE)).thenReturn(sala);
+        Mockito.when(salaRepository.findByIdForUpdate(ID_SALE)).thenReturn(sala);
         Mockito.when(korisnikRepository.findById(ID_KORISNIKA)).thenReturn(korisnik);
         Mockito.when(tipDogadjajaRepository.findById(ID_TIPA)).thenReturn(tipDogadjaja);
     }

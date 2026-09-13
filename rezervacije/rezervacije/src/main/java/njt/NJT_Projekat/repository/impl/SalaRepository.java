@@ -1,6 +1,7 @@
 package njt.NJT_Projekat.repository.impl;
 
 import jakarta.persistence.EntityManager;
+import jakarta.persistence.LockModeType;
 import jakarta.persistence.PersistenceContext;
 import jakarta.transaction.Transactional;
 import java.util.List;
@@ -25,6 +26,16 @@ public class SalaRepository implements MyAppRepository<Sala, Long> {
     @Override
     public Sala findById(Long id) {
         Sala s = em.find(Sala.class, id);
+        if (s == null) {
+            throw new EntitetNijePronadjenException("Sala", id);
+        }
+        return s;
+    }
+
+    // zakljucava red sale do kraja transakcije, pa dva zahteva za istu salu
+    // ne mogu istovremeno da provere zauzetost i oba prodju
+    public Sala findByIdForUpdate(Long id) {
+        Sala s = em.find(Sala.class, id, LockModeType.PESSIMISTIC_WRITE);
         if (s == null) {
             throw new EntitetNijePronadjenException("Sala", id);
         }

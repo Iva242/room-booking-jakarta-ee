@@ -52,7 +52,8 @@ public class RezervacijaService {
         }
 
         // povlacenje entiteta iz baze (navigacija kroz DTO klasu)
-        Sala sala = salaRepository.findById(dto.getIdSale());
+        // zakljucavamo salu da dva istovremena zahteva ne bi oba prosla proveru
+        Sala sala = salaRepository.findByIdForUpdate(dto.getIdSale());
         if (sala == null) {
             throw new EntitetNijePronadjenException("Sala nije pronađena.");
         }

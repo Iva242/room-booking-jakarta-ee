@@ -2,6 +2,7 @@ package njt.NJT_Projekat.repository;
 
 import java.util.List;
 import njt.NJT_Projekat.entity.impl.Sala;
+import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.repository.impl.SalaRepository;
 import org.junit.jupiter.api.Assertions;
 import static org.junit.jupiter.api.Assertions.assertNotNull;
@@ -52,8 +53,25 @@ public class SalaRepositoryTests {
     }
 
     @Test
+    public void findByIdForUpdateTest() {
+        Sala sacuvana = sacuvajSalu("Sala sa zakljucavanjem", "Beograd", 15);
+
+        Sala zakljucana = salaRepository.findByIdForUpdate(sacuvana.getIdSale());
+
+        assertNotNull(zakljucana);
+        Assertions.assertEquals(sacuvana.getIdSale(), zakljucana.getIdSale());
+    }
+
+    @Test
+    public void findByIdForUpdateNepostojeciFailureTest() {
+        Assertions.assertThrows(EntitetNijePronadjenException.class, () -> {
+            salaRepository.findByIdForUpdate(999999L);
+        });
+    }
+
+    @Test
     public void findByIdNepostojeciFailureTest() {
-        Assertions.assertThrows(Exception.class, () -> {
+        Assertions.assertThrows(EntitetNijePronadjenException.class, () -> {
             salaRepository.findById(999999L);
         });
     }
