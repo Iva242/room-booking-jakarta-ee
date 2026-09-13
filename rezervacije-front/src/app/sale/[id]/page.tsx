@@ -255,7 +255,7 @@ export default function SalaDetalji({ params }: PageProps) {
 
       {/* Modal i ostalo ostaje isto... */}
       {isEditModalOpen && (
-        <div className="fixed inset-0 bg-black/60 z-50 flex items-center justify-center p-4">
+        <div className="fixed inset-0 bg-black/60 z-[100] flex items-center justify-center p-4">
           <form
             onSubmit={handleSave}
             className="bg-white p-8 rounded-3xl max-w-lg w-full space-y-4 max-h-[80vh] overflow-y-auto"

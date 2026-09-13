@@ -62,3 +62,9 @@ body {
   from { opacity: 0; transform: translateX(1rem); }
   to   { opacity: 1; transform: translateX(0); }
 }
+
+/* Leaflet svojim delovima dodeljuje z-index do 1000, pa se penje iznad modala.
+   Sopstveni z-index na kontejneru zatvara te vrednosti unutar mape. */
+.leaflet-container {
+  z-index: 0;
+}
