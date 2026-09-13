@@ -30,3 +30,6 @@ nbproject/private/
 Thumbs.db
 .DS_Store
 desktop.ini
+
+# pomocni pregled istorije, nije deo projekta
+istorija-izmena.html
