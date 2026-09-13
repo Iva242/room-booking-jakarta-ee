@@ -65,9 +65,9 @@ const getImageUrl = (slike: string | null | undefined) => {
           {isKorisnik && !isAdmin && onPitaj ? (
             <button
               onClick={onPitaj}
-              className="text-sm font-semibold text-pink-600 italic hover:text-pink-800 transition-colors border-b border-dashed border-pink-400"
+              className="text-sm font-semibold text-pink-950 italic hover:text-pink-600 transition-colors border-b border-dashed border-pink-300"
             >
-              Pitajte za cenu
+              Cena na upit
             </button>
           ) : (
             <p className="text-sm font-semibold text-pink-950 italic">
