@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
+import org.springframework.security.core.AuthenticationException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.method.annotation.MethodArgumentTypeMismatchException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -55,6 +56,14 @@ public class GlobalniObradjivacGresaka {
                 .reduce((a, b) -> a + "; " + b)
                 .orElse("Podaci u zahtevu nisu ispravni.");
         return odgovor(HttpStatus.BAD_REQUEST, poruka, zahtev);
+    }
+
+    // pogresno korisnicko ime ili lozinka nisu greska servera
+    @ExceptionHandler(AuthenticationException.class)
+    public ResponseEntity<OdgovorNaGresku> neuspesnaPrijava(AuthenticationException greska,
+            HttpServletRequest zahtev) {
+        return odgovor(HttpStatus.UNAUTHORIZED,
+                "Pogrešno korisničko ime ili lozinka.", zahtev);
     }
 
     // neispravan tip u putanji, npr. /api/sale/abc umesto broja
