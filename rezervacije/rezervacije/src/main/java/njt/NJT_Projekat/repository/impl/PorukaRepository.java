@@ -90,13 +90,21 @@ public class PorukaRepository implements MyAppRepository<Poruka, Long> {
                 .getSingleResult();
     }
 
+    // poruke se ucitavaju pa im se menja polje, umesto masovnog UPDATE upita.
+    // masovni UPDATE ide pravo u bazu i zaobilazi vec ucitane objekte, pa bi
+    // isti zahtev odmah zatim vratio poruke sa starom vrednoscu.
     @Transactional
     public void oznaciProcitane(Long idKonverzacije, Long idCitaoca) {
-        em.createQuery("UPDATE Poruka p SET p.procitana = true "
-                + "WHERE p.konverzacija.idKonverzacije = :id "
-                + "AND p.autor.idKorisnika <> :citalac AND p.procitana = false")
+        List<Poruka> neprocitane = em.createQuery(
+                "SELECT p FROM Poruka p WHERE p.konverzacija.idKonverzacije = :id "
+                + "AND p.autor.idKorisnika <> :citalac AND p.procitana = false", Poruka.class)
                 .setParameter("id", idKonverzacije)
                 .setParameter("citalac", idCitaoca)
-                .executeUpdate();
+                .getResultList();
+
+        for (Poruka poruka : neprocitane) {
+            poruka.setProcitana(true);
+            em.merge(poruka);
+        }
     }
 }
