@@ -10,6 +10,8 @@ import RezervacijaModal from "@/components/RezervacijaModal";
 import DeleteSalaModal from "@/components/DeleteSalaModal";
 import { useObavestenja } from "@/components/Obavestenja";
 
+const SALA_PO_STRANI = 9;
+
 export default function HomePage() {
   const { uspeh, greska } = useObavestenja();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
@@ -20,6 +22,7 @@ export default function HomePage() {
   const [sortOrder, setSortOrder] = useState("default");
   const [currentUser, setCurrentUser] = useState<Korisnik | null>(null);
   const [selectedSala, setSelectedSala] = useState<Sala | null>(null);
+  const [strana, setStrana] = useState(1);
 
   // 2. SORTIRANJE
   const sortiraneSale = useMemo(() => {
@@ -31,6 +34,17 @@ export default function HomePage() {
     }
     return temp;
   }, [saleIzBaze, sortOrder]);
+
+  const ukupnoStrana = Math.max(1, Math.ceil(sortiraneSale.length / SALA_PO_STRANI));
+  const prikazaneSale = useMemo(() => {
+    const od = (strana - 1) * SALA_PO_STRANI;
+    return sortiraneSale.slice(od, od + SALA_PO_STRANI);
+  }, [sortiraneSale, strana]);
+
+  // pri pretrazi ili promeni redosleda vracamo se na prvu stranu
+  useEffect(() => {
+    setStrana(1);
+  }, [searchQuery, sortOrder]);
 
   // Učitavanje korisnika
   useEffect(() => {
@@ -120,19 +134,57 @@ export default function HomePage() {
           {loading ? (
             <div className="text-center py-20">Učitavanje...</div>
           ) : (
-            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
-              {sortiraneSale.map((sala) => (
-                <SalaCard
-                  key={sala.idSale}
-                  sala={sala}
-                  // FIX: Rezerviši se vidi samo ako je ulogovan I NIJE ADMIN
-                  isKorisnik={
-                    !!currentUser && currentUser.uloga !== "ROLE_ADMIN"
-                  }
-                  onRezervisi={() => setSelectedSala(sala)}
-                />
-              ))}
-            </div>
+            <>
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-10">
+                {prikazaneSale.map((sala) => (
+                  <SalaCard
+                    key={sala.idSale}
+                    sala={sala}
+                    // FIX: Rezerviši se vidi samo ako je ulogovan I NIJE ADMIN
+                    isKorisnik={
+                      !!currentUser && currentUser.uloga !== "ROLE_ADMIN"
+                    }
+                    onRezervisi={() => setSelectedSala(sala)}
+                  />
+                ))}
+              </div>
+
+              {ukupnoStrana > 1 && (
+                <div className="flex justify-center items-center gap-2 mt-16">
+                  <button
+                    onClick={() => setStrana((p) => Math.max(1, p - 1))}
+                    disabled={strana === 1}
+                    className="px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-pink-900 hover:bg-pink-50 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                  >
+                    Prethodna
+                  </button>
+
+                  {Array.from({ length: ukupnoStrana }, (_, i) => i + 1).map(
+                    (broj) => (
+                      <button
+                        key={broj}
+                        onClick={() => setStrana(broj)}
+                        className={`w-11 h-11 rounded-xl text-sm font-black transition-all ${
+                          broj === strana
+                            ? "bg-pink-600 text-white shadow-lg shadow-pink-200"
+                            : "text-pink-900 hover:bg-pink-50"
+                        }`}
+                      >
+                        {broj}
+                      </button>
+                    ),
+                  )}
+
+                  <button
+                    onClick={() => setStrana((p) => Math.min(ukupnoStrana, p + 1))}
+                    disabled={strana === ukupnoStrana}
+                    className="px-5 py-3 rounded-xl text-xs font-black uppercase tracking-widest text-pink-900 hover:bg-pink-50 disabled:opacity-30 disabled:hover:bg-transparent transition-all"
+                  >
+                    Sledeća
+                  </button>
+                </div>
+              )}
+            </>
           )}
         </section>
 
