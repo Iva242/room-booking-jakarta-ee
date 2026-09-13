@@ -9,6 +9,7 @@ import Header from "../components/Header";
 import RezervacijaModal from "@/components/RezervacijaModal";
 import DeleteSalaModal from "@/components/DeleteSalaModal";
 import { useObavestenja } from "@/components/Obavestenja";
+import PitanjeModal from "@/components/PitanjeModal";
 
 const SALA_PO_STRANI = 9;
 
@@ -23,6 +24,7 @@ export default function HomePage() {
   const [currentUser, setCurrentUser] = useState<Korisnik | null>(null);
   const [selectedSala, setSelectedSala] = useState<Sala | null>(null);
   const [strana, setStrana] = useState(1);
+  const [salaZaPitanje, setSalaZaPitanje] = useState<Sala | null>(null);
 
   // 2. SORTIRANJE
   const sortiraneSale = useMemo(() => {
@@ -145,6 +147,7 @@ export default function HomePage() {
                       !!currentUser && currentUser.uloga !== "ROLE_ADMIN"
                     }
                     onRezervisi={() => setSelectedSala(sala)}
+                    onPitaj={() => setSalaZaPitanje(sala)}
                   />
                 ))}
               </div>
@@ -240,6 +243,14 @@ export default function HomePage() {
             }}
           />
         )} */}
+        {salaZaPitanje && (
+          <PitanjeModal
+            idSale={salaZaPitanje.idSale}
+            nazivSale={salaZaPitanje.naziv}
+            onClose={() => setSalaZaPitanje(null)}
+          />
+        )}
+
         {showDeleteModal && (
           <DeleteSalaModal
             sale={saleIzBaze}

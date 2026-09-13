@@ -39,3 +39,21 @@ export interface Rezervacija {
   tipDogadjaja: TipDogadjaja;
   korisnik: Korisnik;
 }
+export interface Konverzacija {
+  idKonverzacije: number;
+  korisnik: Korisnik;
+  idSale: number | null;
+  nazivSale: string | null;
+  poslednjaAktivnost: string;
+  pregledPoslednjePoruke: string | null;
+  brojNeprocitanih: number;
+}
+
+export interface Poruka {
+  idPoruke: number;
+  idKonverzacije: number;
+  tekst: string;
+  vreme: string;
+  procitana: boolean;
+  autor: Korisnik;
+}

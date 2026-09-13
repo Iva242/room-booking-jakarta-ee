@@ -3,14 +3,16 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
-import { Instagram, Facebook, Youtube, Phone } from "lucide-react";
+import { Instagram, Facebook, Youtube, Phone, MessageCircle } from "lucide-react";
 import { Korisnik } from "@/lib/types";
+import { api } from "@/lib/api";
 
 export default function Header() {
   const [showMenu, setShowMenu] = useState(false);
   const [trenutniKorisnik, setTrenutniKorisnik] = useState<Korisnik | null>(
     null,
   );
+  const [neprocitanih, setNeprocitanih] = useState(0);
   const pathname = usePathname();
 
   // Izmeni useEffect u Header.tsx ovako:
@@ -32,6 +34,22 @@ export default function Header() {
 
     return () => window.removeEventListener("storage", proveriKorisnika);
   }, []);
+
+  useEffect(() => {
+    if (!trenutniKorisnik) {
+      setNeprocitanih(0);
+      return;
+    }
+    const ucitaj = () =>
+      api
+        .getBrojNeprocitanih()
+        .then((o: any) => setNeprocitanih(o?.broj ?? 0))
+        .catch(() => setNeprocitanih(0));
+
+    ucitaj();
+    const interval = setInterval(ucitaj, 5000);
+    return () => clearInterval(interval);
+  }, [trenutniKorisnik, pathname]);
 
   const handleLogout = () => {
     localStorage.clear();
@@ -121,6 +139,29 @@ export default function Header() {
             />
           </a>
         </div>
+
+        {trenutniKorisnik && (
+          <Link
+            href="/poruke"
+            aria-label="Poruke"
+            className="relative group"
+            title="Poruke"
+          >
+            <MessageCircle
+              size={22}
+              className={`transition-all ${
+                pathname === "/poruke" || neprocitanih > 0
+                  ? "text-pink-600"
+                  : "text-pink-800/50 group-hover:text-pink-600"
+              }`}
+            />
+            {neprocitanih > 0 && (
+              <span className="absolute -top-1.5 -right-2 bg-pink-600 text-white text-[9px] font-bold rounded-full min-w-[16px] h-[16px] flex items-center justify-center px-1 border-2 border-white">
+                {neprocitanih > 9 ? "9+" : neprocitanih}
+              </span>
+            )}
+          </Link>
+        )}
 
         <div className="relative">
           <button

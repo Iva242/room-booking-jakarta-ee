@@ -11,12 +11,14 @@ export default function SalaCard({
   onRezervisi,
   isAdmin,
   onDelete,
+  onPitaj,
 }: {
   sala: Sala;
   isKorisnik: boolean;
   onRezervisi: () => void;
   isAdmin?: boolean;
   onDelete?: () => void;
+  onPitaj?: () => void;
 }) {
   const [isHovered, setIsHovered] = useState(false);
 
@@ -60,9 +62,18 @@ const getImageUrl = (slike: string | null | undefined) => {
         </p>
 
         <div className="flex items-center justify-between mb-auto">
-          <p className="text-sm font-semibold text-pink-950 italic">
-            Cena na upit
-          </p>
+          {isKorisnik && !isAdmin && onPitaj ? (
+            <button
+              onClick={onPitaj}
+              className="text-sm font-semibold text-pink-600 italic hover:text-pink-800 transition-colors border-b border-dashed border-pink-400"
+            >
+              Pitajte za cenu
+            </button>
+          ) : (
+            <p className="text-sm font-semibold text-pink-950 italic">
+              Cena na upit
+            </p>
+          )}
           <Link
             href={`/sale/${sala.idSale}`}
             className="text-xs font-bold uppercase text-pink-600 hover:text-pink-800 transition-colors border-b border-pink-600"

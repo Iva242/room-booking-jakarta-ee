@@ -218,6 +218,45 @@ export const api = {
     return res.json();
   },
 
+  // --- PORUKE ---
+  getKonverzacije: async () => {
+    const res = await fetch(`${BASE_URL}/poruke`, { headers: getHeaders(true) });
+    return handleResponse(res);
+  },
+
+  zapocniKonverzaciju: async (idSale: number | null, tekst: string) => {
+    const res = await fetch(`${BASE_URL}/poruke`, {
+      method: "POST",
+      headers: getHeaders(true),
+      body: JSON.stringify({ idSale, tekst }),
+    });
+    return handleResponse(res);
+  },
+
+  getPoruke: async (idKonverzacije: number) => {
+    const res = await fetch(`${BASE_URL}/poruke/${idKonverzacije}`, {
+      headers: getHeaders(true),
+    });
+    return handleResponse(res);
+  },
+
+  posaljiPoruku: async (idKonverzacije: number, tekst: string) => {
+    const res = await fetch(`${BASE_URL}/poruke/${idKonverzacije}`, {
+      method: "POST",
+      headers: getHeaders(true),
+      body: JSON.stringify({ tekst }),
+    });
+    return handleResponse(res);
+  },
+
+  getBrojNeprocitanih: async () => {
+    const res = await fetch(`${BASE_URL}/poruke/neprocitane`, {
+      headers: getHeaders(true),
+    });
+    if (!res.ok) return { broj: 0 };
+    return res.json();
+  },
+
   // U api objektu u api.ts
   updateSala: async (id: number, salaDto: any) => {
     const res = await fetch(`${BASE_URL}/sale/${id}`, {
