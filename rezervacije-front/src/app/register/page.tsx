@@ -41,10 +41,7 @@ export default function RegisterStranica() {
         router.push("/login");
       }, 3000);
     } catch (err: any) {
-      setError(
-        err.response?.data?.message ||
-          "Greška pri registraciji. Proverite podatke.",
-      );
+      setError(err?.message || "Greška pri registraciji. Proverite podatke.");
     } finally {
       setLoading(false);
     }
