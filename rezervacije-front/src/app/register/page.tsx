@@ -62,7 +62,7 @@ export default function RegisterStranica() {
             <span className="text-3xl block mb-2">🎉</span>
             <p className="font-bold">Uspešna registracija!</p>
             <p className="text-sm opacity-80">
-              Proverite vaš email (Mailtrap) za potvrdu pre prijave.
+              Proverite vaš email za potvrdu pre prijave.
             </p>
           </div>
         ) : (
