@@ -9,6 +9,10 @@ spring.jpa.hibernate.ddl-auto=update
 spring.jpa.show-sql=true
 spring.jackson.serialization.fail-on-empty-beans=false
 spring.jpa.open-in-view=false
+# XAMPP isporucuje MariaDB server (folder se zove mysql, ali je server MariaDB),
+# pa se koristi MariaDB dijalekat. MySQLDialect bi za pesimisticko zakljucavanje
+# generisao "for update of <alias>", sintaksu koju MariaDB ne podrzava.
+spring.jpa.database-platform=org.hibernate.dialect.MariaDBDialect
 
 logging.level.org.springframework.security=DEBUG
 
