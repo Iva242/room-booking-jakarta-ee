@@ -45,7 +45,9 @@ export default function LoginStranica() {
         router.push("/");
       }
     } catch (err: any) {
-      setError("Neuspešna prijava. Proverite korisničko ime i lozinku.");
+      setError(
+        err?.message || "Neuspešna prijava. Proverite korisničko ime i lozinku.",
+      );
     } finally {
       setLoading(false);
     }

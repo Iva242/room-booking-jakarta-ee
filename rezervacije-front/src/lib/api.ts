@@ -45,7 +45,7 @@ export const api = {
       body: JSON.stringify(podaci),
     });
 
-    if (!res.ok) throw new Error("Pogrešno korisničko ime ili lozinka");
+    if (!res.ok) throw new Error(await procitajGresku(res));
 
     return res.json();
   },

@@ -4,6 +4,7 @@ import jakarta.validation.Valid;
 import njt.NJT_Projekat.dto.auth.AuthRequest;
 import njt.NJT_Projekat.dto.auth.AuthResponse;
 import njt.NJT_Projekat.dto.auth.RegisterRequest;
+import njt.NJT_Projekat.exception.NemaDozvoluException;
 import njt.NJT_Projekat.security.JwtService;
 import njt.NJT_Projekat.service.KorisnikService; // Uvezen servis
 import org.springframework.http.ResponseEntity;
@@ -53,7 +54,8 @@ public class AuthController {
 
         // provera da li je aktivan
         if (!korisnik.isAktivan()) {
-            return ResponseEntity.status(HttpStatus.FORBIDDEN).body(null);
+            throw new NemaDozvoluException(
+                    "Nalog nije potvrđen. Proverite email za potvrdu naloga.");
         }
 
         Long praviId = korisnik.getIdKorisnika();
