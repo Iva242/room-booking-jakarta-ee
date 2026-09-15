@@ -77,7 +77,9 @@ public class RezervacijaService {
         Rezervacija rez = new Rezervacija();
         rez.setPocetak(dto.getPocetak());
         rez.setKraj(dto.getKraj());
-        rez.setStatus(dto.getStatus() != null ? dto.getStatus() : StatusRezervacije.NA_CEKANJU);
+        // pocetni status postavlja server, a ne klijent: svaka nova rezervacija
+        // ceka na potvrdu administratora
+        rez.setStatus(StatusRezervacije.NA_CEKANJU);
 
         // vezivanje entiteta koji smo nasli iz baze
         rez.setSala(sala);
