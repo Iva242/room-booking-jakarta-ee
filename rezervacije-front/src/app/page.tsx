@@ -152,6 +152,14 @@ export default function HomePage() {
                 ))}
               </div>
 
+              {prikazaneSale.length === 0 && (
+                <div className="p-10 text-center text-pink-900/40 text-sm italic">
+                  {searchQuery.trim()
+                    ? "Nema sala koje odgovaraju pretrazi."
+                    : "Trenutno nema unetih sala."}
+                </div>
+              )}
+
               {ukupnoStrana > 1 && (
                 <div className="flex justify-center items-center gap-2 mt-16">
                   <button
