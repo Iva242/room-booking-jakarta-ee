@@ -8,7 +8,7 @@ import njt.NJT_Projekat.entity.impl.TipDogadjaja;
 import njt.NJT_Projekat.entity.impl.Korisnik;
 import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.exception.NevalidanZahtevException;
-import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.KonfliktException;
 import njt.NJT_Projekat.exception.NemaDozvoluException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.repository.impl.RezervacijaRepository;
@@ -70,7 +70,7 @@ public class RezervacijaService {
 
         // proveravamo preklapanje termina
         if (rezervacijaRepository.existsOverlapping(dto.getIdSale(), dto.getPocetak(), dto.getKraj())) {
-            throw new TerminZauzetException("Sala je zauzeta u tom terminu.");
+            throw new KonfliktException("Sala je zauzeta u tom terminu.");
         }
 
         // kreiramo rezervaciju

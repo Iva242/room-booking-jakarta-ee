@@ -3,7 +3,7 @@ package njt.NJT_Projekat.controller;
 import njt.NJT_Projekat.config.SecurityConfig;
 import njt.NJT_Projekat.dto.impl.KorisnikDto;
 import njt.NJT_Projekat.exception.GlobalniObradjivacGresaka;
-import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.KonfliktException;
 import njt.NJT_Projekat.repository.impl.KorisnikRepository;
 import njt.NJT_Projekat.security.AppUserDetailsService;
 import njt.NJT_Projekat.security.JwtService;
@@ -93,7 +93,7 @@ public class AuthControllerTests {
     @Test
     public void registerZauzetoImeFailureTest() throws Exception {
         Mockito.when(korisnikService.registrujKorisnika(Mockito.any()))
-                .thenThrow(new TerminZauzetException("Korisničko ime je zauzeto!"));
+                .thenThrow(new KonfliktException("Korisničko ime je zauzeto!"));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/auth/register")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

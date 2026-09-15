@@ -6,7 +6,7 @@ import njt.NJT_Projekat.entity.impl.Korisnik;
 import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.exception.NemaDozvoluException;
 import njt.NJT_Projekat.exception.NevalidanZahtevException;
-import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.KonfliktException;
 import njt.NJT_Projekat.entity.auth.KorisnikVerificationToken;
 import njt.NJT_Projekat.repository.impl.KorisnikRepository;
 import njt.NJT_Projekat.repository.auth.KorisnikVerificationTokenRepository;
@@ -46,7 +46,7 @@ public class KorisnikService {
     public KorisnikDto registrujKorisnika(Korisnik korisnik) {
         Optional<Korisnik> postojeci = korisnikRepository.findByKorisnickoIme(korisnik.getKorisnickoIme());
         if (postojeci.isPresent()) {
-            throw new TerminZauzetException("Korisničko ime je zauzeto!");
+            throw new KonfliktException("Korisničko ime je zauzeto!");
         }
 
         if (korisnik.getUloga() == null || korisnik.getUloga().isEmpty()) {

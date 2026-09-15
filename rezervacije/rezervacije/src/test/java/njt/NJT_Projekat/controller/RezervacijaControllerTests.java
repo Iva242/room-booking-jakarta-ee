@@ -10,7 +10,7 @@ import njt.NJT_Projekat.dto.impl.TipDogadjajaDto;
 import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
 import njt.NJT_Projekat.exception.GlobalniObradjivacGresaka;
 import njt.NJT_Projekat.exception.NemaDozvoluException;
-import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.KonfliktException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.security.AppUserDetailsService;
 import njt.NJT_Projekat.security.JwtService;
@@ -99,7 +99,7 @@ public class RezervacijaControllerTests {
     public void kreirajZauzetTerminFailureTest() throws Exception {
         RezervacijaDto dto = rezervacijaDto();
         Mockito.when(rezervacijaService.kreirajRezervaciju(Mockito.any(RezervacijaDto.class)))
-                .thenThrow(new TerminZauzetException("Sala je zauzeta u tom terminu."));
+                .thenThrow(new KonfliktException("Sala je zauzeta u tom terminu."));
 
         mockMvc.perform(MockMvcRequestBuilders.post("/api/rezervacije")
                 .contentType(MediaType.APPLICATION_JSON_VALUE)

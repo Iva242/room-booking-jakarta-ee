@@ -14,7 +14,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 import njt.NJT_Projekat.entity.impl.Rezervacija;
 import njt.NJT_Projekat.exception.EntitetNijePronadjenException;
-import njt.NJT_Projekat.exception.TerminZauzetException;
+import njt.NJT_Projekat.exception.KonfliktException;
 import njt.NJT_Projekat.entity.enums.StatusRezervacije;
 import njt.NJT_Projekat.mapper.impl.KarakteristikaMapper;
 import njt.NJT_Projekat.mapper.impl.TipDogadjajaMapper;
@@ -169,7 +169,7 @@ public class SalaService {
         List<Rezervacija> rezervacije = rezervacijaRepository.findBySalaId(id);
         for (Rezervacija r : rezervacije) {
             if (r.getStatus() != StatusRezervacije.ZAVRSENA && r.getStatus() != StatusRezervacije.OTKAZANA) {
-                throw new TerminZauzetException("Sala se ne može obrisati jer postoje aktivne rezervacije.");
+                throw new KonfliktException("Sala se ne može obrisati jer postoje aktivne rezervacije.");
             }
         }
         rezervacijaRepository.deleteAll(rezervacije);

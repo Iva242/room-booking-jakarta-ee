@@ -35,8 +35,8 @@ public class GlobalniObradjivacGresaka {
         return odgovor(HttpStatus.BAD_REQUEST, greska.getMessage(), zahtev);
     }
 
-    @ExceptionHandler(TerminZauzetException.class)
-    public ResponseEntity<OdgovorNaGresku> terminZauzet(TerminZauzetException greska,
+    @ExceptionHandler(KonfliktException.class)
+    public ResponseEntity<OdgovorNaGresku> konflikt(KonfliktException greska,
             HttpServletRequest zahtev) {
         return odgovor(HttpStatus.CONFLICT, greska.getMessage(), zahtev);
     }
