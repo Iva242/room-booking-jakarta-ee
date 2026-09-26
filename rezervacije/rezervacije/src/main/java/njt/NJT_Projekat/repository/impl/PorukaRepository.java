@@ -54,6 +54,12 @@ public class PorukaRepository implements MyAppRepository<Poruka, Long> {
         }
     }
 
+    public void deleteAll(List<Poruka> poruke) {
+        for (Poruka p : poruke) {
+            em.remove(em.contains(p) ? p : em.merge(p));
+        }
+    }
+
     public List<Poruka> findByKonverzacija(Long idKonverzacije) {
         return em.createQuery(
                 "SELECT p FROM Poruka p WHERE p.konverzacija.idKonverzacije = :id ORDER BY p.vreme",

@@ -21,6 +21,9 @@ import njt.NJT_Projekat.mapper.impl.TipDogadjajaMapper;
 import njt.NJT_Projekat.repository.impl.KarakteristikaRepository;
 import njt.NJT_Projekat.repository.impl.TipDogadjajaRepository;
 import njt.NJT_Projekat.repository.impl.RezervacijaRepository;
+import njt.NJT_Projekat.repository.impl.KonverzacijaRepository;
+import njt.NJT_Projekat.repository.impl.PorukaRepository;
+import njt.NJT_Projekat.entity.impl.Konverzacija;
 
 @Service
 public class SalaService {
@@ -32,6 +35,8 @@ public class SalaService {
     private final TipDogadjajaRepository tipRepository;
     private final KarakteristikaRepository karakteristikaRepository;
     private final RezervacijaRepository rezervacijaRepository; 
+    private final KonverzacijaRepository konverzacijaRepository;
+    private final PorukaRepository porukaRepository;
 
     @Autowired
     public SalaService(SalaRepository salaRepository, SalaMapper salaMapper,
@@ -39,7 +44,9 @@ public class SalaService {
             TipDogadjajaMapper tipDogadjajaMapper,
             TipDogadjajaRepository tipRepository,
             KarakteristikaRepository karakteristikaRepository,
-            RezervacijaRepository rezervacijaRepository) { 
+            RezervacijaRepository rezervacijaRepository,
+            KonverzacijaRepository konverzacijaRepository,
+            PorukaRepository porukaRepository) { 
         this.salaRepository = salaRepository;
         this.salaMapper = salaMapper;
         this.karakteristikaMapper = karakteristikaMapper;
@@ -47,6 +54,8 @@ public class SalaService {
         this.tipRepository = tipRepository;
         this.karakteristikaRepository = karakteristikaRepository;
         this.rezervacijaRepository = rezervacijaRepository; 
+        this.konverzacijaRepository = konverzacijaRepository;
+        this.porukaRepository = porukaRepository;
     }
 
     public List<SalaDto> vratiSve() {
@@ -173,6 +182,13 @@ public class SalaService {
             }
         }
         rezervacijaRepository.deleteAll(rezervacije);
+
+        // razgovori o ovoj sali nestaju zajedno sa njom; poruke se brisu prve
+        // jer strani kljuc poruke ne dozvoljava brisanje razgovora dok one postoje
+        for (Konverzacija k : konverzacijaRepository.findBySala(id)) {
+            porukaRepository.deleteAll(porukaRepository.findByKonverzacija(k.getIdKonverzacije()));
+            konverzacijaRepository.deleteById(k.getIdKonverzacije());
+        }
 
         // cistimo veze pre brisanja
         sala.setKarakteristike(new ArrayList<>());

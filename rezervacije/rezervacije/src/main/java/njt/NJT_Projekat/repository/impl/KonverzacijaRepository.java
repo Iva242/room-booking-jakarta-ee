@@ -55,6 +55,14 @@ public class KonverzacijaRepository implements MyAppRepository<Konverzacija, Lon
         }
     }
 
+    // razgovori o jednoj sali; opsta pitanja nemaju salu pa ovde ne ulaze
+    public List<Konverzacija> findBySala(Long idSale) {
+        return em.createQuery(
+                "SELECT k FROM Konverzacija k WHERE k.sala.idSale = :idSale", Konverzacija.class)
+                .setParameter("idSale", idSale)
+                .getResultList();
+    }
+
     public List<Konverzacija> findByKorisnik(Long idKorisnika) {
         return em.createQuery(
                 "SELECT k FROM Konverzacija k WHERE k.korisnik.idKorisnika = :idKorisnika "
