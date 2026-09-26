@@ -28,9 +28,18 @@ export const procitajGresku = async (res: Response): Promise<string> => {
   }
 };
 
+// uz poruku sa servera nosimo i status, da pozivalac zna da li server ume da objasni gresku
+const greskaSaStatusom = async (res: Response) => {
+  const greska = new Error(await procitajGresku(res)) as Error & {
+    status?: number;
+  };
+  greska.status = res.status;
+  return greska;
+};
+
 // Dodajemo pomoćnu funkciju da ne pišemo isti kod za greške 10 puta
 const handleResponse = async (res: Response) => {
-  if (!res.ok) throw new Error(await procitajGresku(res));
+  if (!res.ok) throw await greskaSaStatusom(res);
   if (res.status === 204) return null;
   return res.json();
 };
@@ -45,7 +54,7 @@ export const api = {
       body: JSON.stringify(podaci),
     });
 
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
 
     return res.json();
   },
@@ -56,7 +65,7 @@ export const api = {
       headers: getHeaders(false),
       body: JSON.stringify(podaci),
     });
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
     return res.json();
   },
 
@@ -86,7 +95,7 @@ export const api = {
       headers: getHeaders(true),
     });
 
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
     return { success: true };
   },
 
@@ -96,9 +105,7 @@ export const api = {
       headers: getHeaders(false),
     });
 
-    if (!res.ok) {
-      throw new Error(await procitajGresku(res));
-    }
+    if (!res.ok) throw await greskaSaStatusom(res);
 
     return res.json();
   },
@@ -122,7 +129,7 @@ export const api = {
       headers: getHeaders(true),
       body: JSON.stringify(podaci),
     });
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
     return res.json();
   },
 
@@ -153,7 +160,7 @@ export const api = {
       method: "DELETE",
       headers: getHeaders(true),
     });
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
     return { success: true };
   },
 
@@ -167,7 +174,7 @@ export const api = {
     );
 
     // Ako backend vrati grešku (status 400 ili 500), bacaš izuzetak
-    if (!res.ok) throw new Error(await procitajGresku(res));
+    if (!res.ok) throw await greskaSaStatusom(res);
 
     // Pošto vraćaš običan String, ne treba ti res.json().
     // Samo vrati uspeh da znaš da je sve prošlo.

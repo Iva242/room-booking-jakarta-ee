@@ -41,7 +41,13 @@ export default function RegisterStranica() {
         router.push("/login");
       }, 3000);
     } catch (err: any) {
-      setError(err?.message || "Greška pri registraciji. Proverite podatke.");
+      // 4xx: server zna sta nije u redu i to kaze korisniku (zauzeto ime, kratka lozinka...)
+      // 5xx ili server ne odgovara: razlog korisnika ne zanima
+      setError(
+        err?.status && err.status < 500
+          ? err.message
+          : "Sistem ne može da registruje korisnika.",
+      );
     } finally {
       setLoading(false);
     }

@@ -230,12 +230,15 @@ export default function HomePage() {
                 if (res.ok) {
                   uspeh("Rezervacija je poslata.");
                   setSelectedSala(null); // Zatvara modal tek nakon uspešnog slanja
-                } else {
+                } else if (res.status < 500) {
+                  // server zna sta nije u redu, npr. da je sala zauzeta u tom terminu
                   greska(await procitajGresku(res));
+                } else {
+                  greska("Sistem ne može da sačuva rezervaciju.");
                 }
-              } catch (err) {
-                console.error("Greška:", err);
-                greska("Došlo je do greške sa serverom.");
+              } catch {
+                // server ne odgovara
+                greska("Sistem ne može da sačuva rezervaciju.");
               }
             }}
           />

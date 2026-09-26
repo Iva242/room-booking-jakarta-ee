@@ -25,13 +25,13 @@ export default function DeleteSalaModal({
         onClose();
       }, 1500);
     } catch (err: any) {
-      // Pošto koristiš fetch, poruka greške koju smo "bacili" (throw new Error(...))
-      // nalazi se u err.message
-      if (err.message) {
-        setError(err.message);
-      } else {
-        setError("Došlo je do greške prilikom brisanja sale.");
-      }
+      // 4xx: server zna sta nije u redu, npr. da sala ima aktivne rezervacije
+      // 5xx ili nema odgovora: razlog korisnika ne zanima
+      setError(
+        err?.status && err.status < 500
+          ? err.message
+          : "Sistem ne može da obriše salu.",
+      );
     }
   };
 

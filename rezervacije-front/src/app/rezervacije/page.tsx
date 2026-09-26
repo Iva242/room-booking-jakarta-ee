@@ -82,7 +82,12 @@ export default function Home() {
       );
       uspeh("Rezervacija je potvrđena.");
     } catch (error: any) {
-      greska(error.message);
+      // 4xx: server zna sta nije u redu; 5xx ili nema odgovora: razlog korisnika ne zanima
+      greska(
+        error?.status && error.status < 500
+          ? error.message
+          : "Sistem ne može da potvrdi rezervaciju.",
+      );
     }
   };
 

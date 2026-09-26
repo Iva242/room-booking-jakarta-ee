@@ -18,7 +18,12 @@ export default function PitanjeModal({ idSale, nazivSale, onClose }: Props) {
 
   const posalji = async (e: React.FormEvent) => {
     e.preventDefault();
-    if (!tekst.trim() || salje) return;
+    if (salje) return;
+
+    if (!tekst.trim()) {
+      greska("Sistem ne može da pošalje pitanje jer tekst pitanja nije unet.");
+      return;
+    }
 
     setSalje(true);
     try {
@@ -26,7 +31,12 @@ export default function PitanjeModal({ idSale, nazivSale, onClose }: Props) {
       uspeh("Pitanje je poslato. Odgovor stiže u vaše poruke.");
       onClose();
     } catch (err: any) {
-      greska(err?.message || "Pitanje nije poslato.");
+      // 4xx: server zna sta nije u redu; 5xx ili nema odgovora: razlog korisnika ne zanima
+      greska(
+        err?.status && err.status < 500
+          ? err.message
+          : "Sistem ne može da pošalje pitanje.",
+      );
     } finally {
       setSalje(false);
     }
@@ -75,7 +85,7 @@ export default function PitanjeModal({ idSale, nazivSale, onClose }: Props) {
             </button>
             <button
               type="submit"
-              disabled={!tekst.trim() || salje}
+              disabled={salje}
               className="flex-1 bg-pink-600 text-white py-4 rounded-2xl font-black text-xs uppercase tracking-widest shadow-lg shadow-pink-200 hover:bg-pink-700 disabled:opacity-30 disabled:shadow-none transition-all"
             >
               {salje ? "Šalje se…" : "Pošalji"}

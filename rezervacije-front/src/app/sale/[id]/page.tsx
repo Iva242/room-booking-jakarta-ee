@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, use, useMemo } from "react";
-import { useParams, notFound } from "next/navigation";
+import { useParams } from "next/navigation";
 import { api, BASE_URL, procitajGresku } from "@/lib/api";
 import { useObavestenja } from "@/components/Obavestenja";
 import { Sala } from "@/lib/types";
@@ -103,8 +103,8 @@ export default function SalaDetalji({ params }: PageProps) {
           salaData.tipoviDogadjaja?.map((t: any) => Number(t.idTipDogadjaja)) ||
             [],
         );
-      } catch (err) {
-        console.error(err);
+      } catch {
+        // sala ostaje null, pa se ispod prikazuje poruka korisniku
       } finally {
         setLoading(false);
       }
@@ -161,7 +161,20 @@ export default function SalaDetalji({ params }: PageProps) {
         Učitavanje...
       </div>
     );
-  if (!sala) return notFound();
+  if (!sala)
+    return (
+      <div className="min-h-screen bg-gray-50">
+        <Header />
+        <div className="max-w-6xl mx-auto px-8 py-24 text-center">
+          <p className="text-gray-600 mb-6">
+            Sistem ne može da učita salu.
+          </p>
+          <Link href="/" className="text-pink-600 font-bold underline">
+            Nazad na spisak sala
+          </Link>
+        </div>
+      </div>
+    );
 
   return (
     <div className="min-h-screen bg-gray-50">
