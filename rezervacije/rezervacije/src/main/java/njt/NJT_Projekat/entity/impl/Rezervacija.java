@@ -39,7 +39,6 @@ public class Rezervacija extends MyEntity {
     @Convert(converter = StatusRezervacijeConverter.class)
     private StatusRezervacije status;
 
-    // veze sa ostalim tabelama (FK)
     // rezervacija se odnosi na jednu i samo jednu salu
     @ManyToOne
     @JoinColumn(name = "id_sale")

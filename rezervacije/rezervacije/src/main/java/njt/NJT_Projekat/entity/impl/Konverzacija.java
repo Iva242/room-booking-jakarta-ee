@@ -30,13 +30,12 @@ public class Konverzacija extends MyEntity {
     @JoinColumn(name = "id_korisnika", nullable = false)
     private Korisnik korisnik;
 
-    // sala o kojoj se pita; ostaje prazno kod opsteg pitanja
+    // sala o kojoj se pita
     @ManyToOne(fetch = FetchType.EAGER)
     @JoinColumn(name = "id_sale")
     private Sala sala;
 
     private LocalDateTime kreirana;
 
-    // po ovome se razgovori redjaju, najnoviji na vrhu
     private LocalDateTime poslednjaAktivnost;
 }

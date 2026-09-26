@@ -42,6 +42,5 @@ public class Poruka extends MyEntity {
     @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd HH:mm:ss")
     private LocalDateTime vreme;
 
-    // procitao je onaj kome poruka nije upucena kao autoru
     private boolean procitana;
 }

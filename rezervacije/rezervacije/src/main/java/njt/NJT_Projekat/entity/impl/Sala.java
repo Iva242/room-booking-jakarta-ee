@@ -37,9 +37,9 @@ public class Sala extends MyEntity{
     private Double longitude;
 
     @Column(columnDefinition = "TEXT")
-    private String slike; // ovde cuvamo putanje do slika
+    private String slike; 
 
-// SalaKarakteristika
+    // SalaKarakteristika
     @ManyToMany(fetch = FetchType.EAGER, cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
         name = "sala_karakteristika",
