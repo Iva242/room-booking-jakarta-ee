@@ -33,3 +33,6 @@ desktop.ini
 
 # pomocni pregled istorije, nije deo projekta
 istorija-izmena.html
+
+# lokalna dokumentacija rada (tekst, prezentacija, govor), ne ide u repozitorijum
+dokumentacija/

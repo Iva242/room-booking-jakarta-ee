@@ -1,0 +1,25 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="870" height="408" viewBox="0 0 870 408">
+<rect width="870" height="408" fill="#ffffff"/>
+<defs><marker id="puna" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#1a1a1a"/></marker><marker id="prazna" markerWidth="11" markerHeight="9" refX="10" refY="4.5" orient="auto"><path d="M0,0 L10,4.5 M0,9 L10,4.5" stroke="#1a1a1a" stroke-width="1.2" fill="none"/></marker></defs>
+<text x="70" y="22" font-family="Arial" font-size="15" font-weight="600" fill="#1a1a1a">УГ9: getAllRezervacije</text>
+<rect x="69" y="30" width="163" height="38" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="150" y="54" text-anchor="middle" font-family="Arial" font-size="12" font-weight="600" fill="#1a1a1a">RezervacijaController</text>
+<line x1="150" y1="68" x2="150" y2="388" stroke="#1a1a1a" stroke-width="1.1" stroke-dasharray="6,5"/>
+<rect x="340" y="30" width="140" height="38" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="410" y="54" text-anchor="middle" font-family="Arial" font-size="12" font-weight="600" fill="#1a1a1a">RezervacijaService</text>
+<line x1="410" y1="68" x2="410" y2="388" stroke="#1a1a1a" stroke-width="1.1" stroke-dasharray="6,5"/>
+<rect x="589" y="30" width="163" height="38" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="670" y="54" text-anchor="middle" font-family="Arial" font-size="12" font-weight="600" fill="#1a1a1a">RezervacijaRepository</text>
+<line x1="670" y1="68" x2="670" y2="388" stroke="#1a1a1a" stroke-width="1.1" stroke-dasharray="6,5"/>
+<rect x="145" y="112" width="10" height="202" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<rect x="405" y="112" width="10" height="202" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<rect x="665" y="174" width="10" height="78" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.1"/>
+<line x1="155" y1="120" x2="405" y2="120" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<text x="280" y="110" text-anchor="middle" font-family="Arial" font-size="12" fill="#1a1a1a">rezervacije()</text>
+<line x1="415" y1="182" x2="665" y2="182" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<text x="540" y="172" text-anchor="middle" font-family="Arial" font-size="12" fill="#1a1a1a">findAll()</text>
+<line x1="665" y1="244" x2="415" y2="244" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#prazna)" stroke-dasharray="7,5"/>
+<text x="540" y="234" text-anchor="middle" font-family="Arial" font-size="12" fill="#1a1a1a">signal, List&lt;Rezervacija&gt;</text>
+<line x1="405" y1="306" x2="155" y2="306" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#prazna)" stroke-dasharray="7,5"/>
+<text x="280" y="296" text-anchor="middle" font-family="Arial" font-size="12" fill="#1a1a1a">signal, List&lt;RezervacijaDto&gt;</text>
+</svg>

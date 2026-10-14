@@ -1,0 +1,140 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1300" viewBox="0 0 1800 1300">
+<rect width="1800" height="1300" fill="#ffffff"/>
+<defs><marker id="puna" markerWidth="10" markerHeight="8" refX="9" refY="4" orient="auto"><path d="M0,0 L10,4 L0,8 z" fill="#1a1a1a"/></marker></defs>
+<rect x="530" y="20" width="740" height="120" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="542" y="40" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Клијентски програм (Next.js)</text>
+<rect x="566" y="58" width="280" height="58" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="706" y="84" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Странице</text>
+<text x="706" y="98" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">(екранске форме)</text>
+<rect x="954" y="58" width="280" height="58" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1094" y="84" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">api</text>
+<text x="1094" y="98" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">(контролер КИ)</text>
+<path d="M846,87 L954,87" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<rect x="710" y="186" width="380" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="900" y="213" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">JwtAuthFilter</text>
+<path d="M900,140 L900,186" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<text x="908" y="167" font-family="Arial" font-size="11.5" fill="#1a1a1a">HTTP / JSON</text>
+<rect x="80" y="264" width="1640" height="94" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="92" y="284" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Контролери</text>
+<rect x="104" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="210" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">AuthController</text>
+<rect x="333" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="439" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KorisnikController</text>
+<rect x="562" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="668" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">SalaController</text>
+<rect x="791" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="897" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaController</text>
+<rect x="1020" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1126" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">PorukaController</text>
+<rect x="1249" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1355" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KarakteristikaController</text>
+<rect x="1478" y="294" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1584" y="321" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjajaController</text>
+<rect x="80" y="400" width="1640" height="94" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="92" y="420" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Сервиси  (пословна логика)</text>
+<rect x="104" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="210" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KorisnikService</text>
+<rect x="333" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="439" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">SalaService</text>
+<rect x="562" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="668" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaService</text>
+<rect x="791" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="897" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaStatusService</text>
+<rect x="1020" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1126" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">PorukaService</text>
+<rect x="1249" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1355" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KarakteristikaService</text>
+<rect x="1478" y="430" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1584" y="457" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjajaService</text>
+<rect x="80" y="536" width="1640" height="156" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="92" y="556" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Репозиторијуми  (брокер базе података)</text>
+<rect x="104" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="210" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KorisnikRepository</text>
+<rect x="333" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="439" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">SalaRepository</text>
+<rect x="562" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="668" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaRepository</text>
+<rect x="791" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="897" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KonverzacijaRepository</text>
+<rect x="1020" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1126" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">PorukaRepository</text>
+<rect x="1249" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1355" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KarakteristikaRepository</text>
+<rect x="1478" y="566" width="213" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1584" y="593" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjajaRepository</text>
+<rect x="740" y="628" width="320" height="46" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="900" y="655" text-anchor="middle" font-family="Arial" font-size="11.5" font-style="italic" fill="#1a1a1a">«interface»  MyAppRepository</text>
+<path d="M900,232 L900,264" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M900,358 L900,400" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M900,494 L900,536" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M1560,752 h140 v70 a70,16 0 0 1 -140,0 z" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+<ellipse cx="1630" cy="752" rx="70" ry="16" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="1630" y="796" text-anchor="middle" font-family="Arial" font-size="12.5" fill="#1a1a1a">база података</text>
+<path d="M1630,692 L1630,736" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<rect x="80" y="872" width="600" height="322" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="92" y="892" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Доменске класе</text>
+<rect x="100" y="904" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="237" y="926" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Korisnik</text>
+<rect x="386" y="904" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="523" y="926" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Sala</text>
+<rect x="100" y="950" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="237" y="972" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Karakteristika</text>
+<rect x="386" y="950" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="523" y="972" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjaja</text>
+<rect x="100" y="996" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="237" y="1018" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Rezervacija</text>
+<rect x="386" y="996" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="523" y="1018" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Konverzacija</text>
+<rect x="100" y="1042" width="274" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="237" y="1064" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">Poruka</text>
+<rect x="100" y="1088" width="560" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="380" y="1110" text-anchor="middle" font-family="Arial" font-size="11.5" font-style="italic" fill="#1a1a1a">MyEntity   (апстрактна)</text>
+<rect x="100" y="1134" width="560" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="380" y="1156" text-anchor="middle" font-family="Arial" font-size="11.5" font-style="italic" fill="#1a1a1a">«enumeration»   StatusRezervacije</text>
+<rect x="740" y="872" width="340" height="368" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="752" y="892" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">Мапери</text>
+<rect x="760" y="904" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="926" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KorisnikMapper</text>
+<rect x="760" y="950" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="972" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">SalaMapper</text>
+<rect x="760" y="996" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="1018" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaMapper</text>
+<rect x="760" y="1042" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="1064" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KonverzacijaMapper</text>
+<rect x="760" y="1088" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="1110" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">PorukaMapper</text>
+<rect x="760" y="1134" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="1156" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KarakteristikaMapper</text>
+<rect x="760" y="1180" width="300" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="910" y="1202" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjajaMapper</text>
+<rect x="1140" y="872" width="580" height="322" fill="none" stroke="#1a1a1a" stroke-width="1.4"/>
+<text x="1152" y="892" font-family="Arial" font-size="13" font-weight="600" fill="#1a1a1a">DTO</text>
+<rect x="1160" y="904" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="926" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KorisnikDto</text>
+<rect x="1436" y="904" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1568" y="926" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">SalaDto</text>
+<rect x="1160" y="950" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="972" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RezervacijaDto</text>
+<rect x="1436" y="950" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1568" y="972" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KarakteristikaDto</text>
+<rect x="1160" y="996" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="1018" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">TipDogadjajaDto</text>
+<rect x="1436" y="996" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1568" y="1018" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">KonverzacijaDto</text>
+<rect x="1160" y="1042" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="1064" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">PorukaDto</text>
+<rect x="1436" y="1042" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1568" y="1064" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">NovaPorukaDto</text>
+<rect x="1160" y="1088" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="1110" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">AuthRequest</text>
+<rect x="1436" y="1088" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1568" y="1110" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">AuthResponse</text>
+<rect x="1160" y="1134" width="264" height="36" fill="#ffffff" stroke="#1a1a1a" stroke-width="1.3"/>
+<text x="1292" y="1156" text-anchor="middle" font-family="Arial" font-size="11.5" fill="#1a1a1a">RegisterRequest</text>
+<path d="M740,932 L680,932" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M1080,932 L1140,932" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M80,576 L34,576 L34,1022 L80,1022" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M80,440 L58,440 L58,962 L80,962" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M1720,304 L1766,304 L1766,962 L1720,962" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+<path d="M1720,440 L1742,440 L1742,1022 L1720,1022" fill="none" stroke="#1a1a1a" stroke-width="1.3" marker-end="url(#puna)"/>
+</svg>
